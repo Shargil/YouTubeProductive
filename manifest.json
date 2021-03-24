@@ -3,16 +3,18 @@
     "description": "YouTube Productive description",
     "version": "0.1.0",
     "manifest_version": 3,
-    "icons": {
-        "16": "icons/youtube-16x16.png",
-        "32": "icons/youtube-32x32.png",
-        "48": "icons/youtube-32x32.png",
-        "128": "icons/youtube-128x128.png"
-    },
     "background": {
-        "service_worker": ["./background.js"]
+        "service_worker": "background.js"
     },
-    "options_page": "./options.html",
+    "permissions": [
+        "tabs",
+        "webRequest",
+        "storage",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://www.youtube.com/*"
+    ],
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
@@ -22,10 +24,11 @@
             "128": "icons/youtube-128x128.png"
         }
     },
-    "permissions": [
-        "tabs",
-        "webRequest",
-        "https://www.youtube.com/*",
-        "storage"
-    ]
+    "icons": {
+        "16": "icons/youtube-16x16.png",
+        "32": "icons/youtube-32x32.png",
+        "48": "icons/youtube-32x32.png",
+        "128": "icons/youtube-128x128.png"
+    },
+    "options_page": "./options.html"
 }
