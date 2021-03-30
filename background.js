@@ -1,18 +1,39 @@
-// On YouTube request new videos, ask foreground to rerun filter
-const youTubeMoreVideosUrls = [
-    "https://www.youtube.com/",
-    "https://www.youtube.com/youtubei/v1/browse?*"
-]
+try { importScripts("constants.js"); } catch (e) { console.error(e); }
 
-// onComplete?
-chrome.webRequest.onResponseStarted.addListener(
+// --- On Install ---
+chrome.runtime.onInstalled.addListener(function () {
+    chrome.storage.sync.set({ extensionMode: EXTN_MODE.FILTER }, () => { });
+});
+
+// --- On YouTube Request More Videos --- 
+chrome.webRequest.onCompleted.addListener(
+    // onComplete? onResponseStart? just try in real time, with no debugging, black list and white list, what works better.
     details => {
-        console.log("On YouTube request new videos, rerun foreground");
-        chrome.scripting.executeScript(
-            {
-                target: { tabId: details.tabId },
-                files: ['fillter.js']
-            },
-            () => { });
+        // runScript('filter.js', details.tabId);
+        runScript('searchOnly.js', details.tabId);
     },
-    { urls: youTubeMoreVideosUrls });
+    { urls: youTubeAskMoreVideosUrls });
+
+
+
+function runScript(scriptPath, tabId) {
+    chrome.scripting.executeScript(
+        {
+            target: { tabId: tabId },
+            files: [scriptPath]
+        },
+        () => { });
+}
+
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        if (request.contentScriptFuncs) {
+            switch (request.contentScriptFuncs) {
+                case "getMyURL":
+                    sendResponse({ url: sender.tab.url });
+                    break;
+                default:
+            }
+        }
+    }
+);
