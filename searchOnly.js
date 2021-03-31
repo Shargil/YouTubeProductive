@@ -1,6 +1,6 @@
-chrome.storage.sync.get("extensionMode", (res) => {
+chrome.storage.sync.get(["CONST", "user"], (res) => {
     debugger;
-    if (res.extensionMode === "searchOnly") {
+    if (res.user.extensionMode === res.CONST.EXTN_MODE.SEARCH_ONLY) {
 
         console.log("searchOnly is running!")
         debugger;

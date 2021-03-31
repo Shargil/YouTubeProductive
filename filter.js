@@ -1,73 +1,41 @@
-chrome.storage.sync.get("extensionMode", (res) => {
-    if (res.extensionMode === "filter") {
+console.log("filter.js run");
+chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
+    if (res.user.extensionMode === res.CONST.EXTN_MODE.FILTER) {
 
-        console.log("filter.js running")
-        debugger;
+        const query = 'ytd-rich-item-renderer, ytd-compact-video-renderer';
 
-        // move MODE stuff to storage
-        let MODE = Object.freeze({
-            DEV: "dev",
-            PROD: "prod"
-        })
-        let mode = MODE.DEV;
+        // Run the filter only when the query return a stable amount of DOM elements (probably finished rendering)
+        runWhenQueryReturnSomething(query, () => {
+            var videos = document.querySelectorAll(query);  // https://stackoverflow.com/questions/23988982/removing-htmlcollection-elements-from-the-dom
+            var deleteMe = " "
+            for (let video of videos) {
+                let channelName = getChannelNameOfVideoContainer(video);
 
-        let CHANNELS = Object.freeze({
-            blackLists: {
-                default: {
-                    "MrBeast": true,
-                    "Brandon Walsh": true,
-                    "Jesse James West": true
-                },
-            },
-            whiteLists: {
-                default: {
-                    "Veritasium": true,
-                    "Mark Rober": true,
-                    "colinfurze": true,
-                    "Kurzgesagt – In a Nutshell": true,
-                    "ColdFusion": true,
-                    "Medlife Crisis": true,
-                    "טופ גיק": true,
-                    "FitnessFAQs": true,
-                    "Mike Boyd": true,
-
+                switch (res.user.list.TYPE) {
+                    case res.CONST.LIST_TYPE.BLACK_LIST:
+                        if (channelName in res.user.list.LIST) {
+                            deleteMe = deleteMe + channelName + ', '
+                            video.remove();
+                        }
+                        break;
+                    case res.CONST.LIST_TYPE.WHITE_LIST:
+                        if (channelName && !(channelName in res.user.list.LIST)) {
+                            deleteMe = deleteMe + channelName + ', '
+                            video.remove();
+                        }
+                        break;
                 }
-            },
+            }
+            alert("filter!" + deleteMe);
+            removeLoadingAnimation()
         });
 
-        let LIST_TYPE = Object.freeze({
-            WHITE_LIST: "white_list",
-            BLACK_LIST: "black_list"
-        })
-
-        let userChannelsList = {
-            listType: LIST_TYPE.BLACK_LIST
-        }
-
-
-        // --- HomeScreen ---
-        var videos = document.querySelectorAll('ytd-rich-item-renderer');  // https://stackoverflow.com/questions/23988982/removing-htmlcollection-elements-from-the-dom
-
-        for (let video of videos) {
-            let channelName = getChannelNameOfVideoContainer(video);
-
-            switch (userChannelsList.listType) {
-                case LIST_TYPE.BLACK_LIST:
-                    if (channelName in CHANNELS.blackLists.default)
-                        video.remove();
-                    break;
-                case LIST_TYPE.WHITE_LIST:
-                    if (channelName && !(channelName in CHANNELS.whiteLists.default))
-                        video.remove();
-                    break;
-            }
-        }
 
         function getChannelNameOfVideoContainer(videoContainer) {
             try {
-                return videoContainer.querySelector('#channel-name #container #text-container #text a').innerText;
+                return videoContainer.querySelector('#channel-name').innerText;
             } catch (error) {
-                if (mode === MODE.DEV) {
+                if (res.devMode === res.CONST.DEV_MODE.DEV) {
                     console.error("getChannelNameOfVideoContainer didn't found channel name. Original Error -> " + error);
                     console.error(videoContainer);
                 }
@@ -75,6 +43,36 @@ chrome.storage.sync.get("extensionMode", (res) => {
             }
         }
 
+        function runWhenQueryReturnSomething(query, myFunc) {
+            let matchingElementsLength;;
+            const myInterval = setInterval(() => {
+                matchingElementsLength = document.querySelectorAll(query).length;
+                if (matchingElementsLength > 0 &&
+                    queryIsStableForTheLastIntervals(3, matchingElementsLength)) {
+                    clearInterval(myInterval);
+                    alert("The number of elements founded: " + matchingElementsLength);
+                    myFunc();
+                }
+            }, 400);
+        }
+
+        let matchingElementsLengthArray = [];
+        function queryIsStableForTheLastIntervals(stableIntervals, matchingElementsLength) {
+            matchingElementsLengthArray.push(matchingElementsLength);
+            console.log(matchingElementsLength);
+            if (stableIntervals <= matchingElementsLengthArray.length) {
+                let relevantIntervalsArray = matchingElementsLengthArray.slice(-(stableIntervals));
+                let areLastIntervalsEqual = relevantIntervalsArray.every(e => e === relevantIntervalsArray[0]);
+                return areLastIntervalsEqual;
+            }
+            return false;
+        }
+
+        function removeLoadingAnimation() {
+            let element = document.querySelectorAll('ytd-watch-next-secondary-results-renderer paper-spinner')[0];
+            if (element)
+                element.remove();
+        }
+
     }
 });
-

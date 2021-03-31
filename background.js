@@ -2,29 +2,26 @@ try { importScripts("constants.js"); } catch (e) { console.error(e); }
 
 // --- On Install ---
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.sync.set({ extensionMode: EXTN_MODE.FILTER }, () => { });
+    chrome.storage.sync.set({ CONST: CONSTANTS }, () => { });
+    chrome.storage.sync.set({
+        user: {
+            extensionMode: CONSTANTS.EXTN_MODE.FILTER,
+            list: CONSTANTS.LISTS.DEFAULT_BLACK
+        }
+    }, () => { });
+    chrome.storage.sync.set({ devMode: CONSTANTS.DEV_MODE.PROD }, () => { });
 });
 
 // --- On YouTube Request More Videos --- 
-chrome.webRequest.onCompleted.addListener(
-    // onComplete? onResponseStart? just try in real time, with no debugging, black list and white list, what works better.
+chrome.webRequest.onCompleted.addListener( // onCompleted? onResponseStarted? just try in real time, with no debugging, black list and white list, what works better.
     details => {
-        // runScript('filter.js', details.tabId);
-        runScript('searchOnly.js', details.tabId);
+        console.log("relevant web request completed");
+        runScript('filter.js', details.tabId);
+        // runScript('searchOnly.js', details.tabId);
     },
-    { urls: youTubeAskMoreVideosUrls });
+    { urls: youTubeAskMoreVideosURLs });
 
-
-
-function runScript(scriptPath, tabId) {
-    chrome.scripting.executeScript(
-        {
-            target: { tabId: tabId },
-            files: [scriptPath]
-        },
-        () => { });
-}
-
+// --- On Messages ---
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.contentScriptFuncs) {
@@ -37,3 +34,15 @@ chrome.runtime.onMessage.addListener(
         }
     }
 );
+
+
+// --- Extra Functions ---
+
+function runScript(scriptPath, tabId) {
+    chrome.scripting.executeScript(
+        {
+            target: { tabId: tabId },
+            files: [scriptPath]
+        },
+        () => { });
+}
