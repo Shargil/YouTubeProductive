@@ -17,9 +17,22 @@ chrome.webRequest.onCompleted.addListener( // onCompleted? onResponseStarted? ju
     details => {
         console.log("relevant web request completed");
         runScript('filter.js', details.tabId);
-        // runScript('searchOnly.js', details.tabId);
+        runScript('searchOnly.js', details.tabId);
     },
     { urls: youTubeAskMoreVideosURLs });
+
+
+// --- On YouTube Video Ends --- 
+chrome.webRequest.onCompleted.addListener(
+    details => {
+        var url = new URL(details.url);
+        // If the current time and length of the video are the same, it's the end.  
+        if (url.searchParams.get("cmt") === url.searchParams.get("len")) {
+            runScript('filter.js', details.tabId);
+            runScript('searchOnly.js', details.tabId);
+        }
+    },
+    { urls: watchTimeStatsUrl });
 
 // --- On Messages ---
 chrome.runtime.onMessage.addListener(
@@ -34,7 +47,6 @@ chrome.runtime.onMessage.addListener(
         }
     }
 );
-
 
 // --- Extra Functions ---
 

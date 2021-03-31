@@ -1,10 +1,5 @@
 chrome.storage.sync.get(["CONST", "user"], (res) => {
-    debugger;
     if (res.user.extensionMode === res.CONST.EXTN_MODE.SEARCH_ONLY) {
-
-        console.log("searchOnly is running!")
-        debugger;
-
         var endScreenContent = document.getElementsByClassName("ytp-endscreen-content");
         if (endScreenContent && endScreenContent[0])
             endScreenContent[0].remove();

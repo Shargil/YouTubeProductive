@@ -1,39 +1,44 @@
-console.log("filter.js run");
 chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
     if (res.user.extensionMode === res.CONST.EXTN_MODE.FILTER) {
 
-        const query = 'ytd-rich-item-renderer, ytd-compact-video-renderer';
+        // Maybe I should take a different approach:
+        // sample every 100ms
+        // If something new found from query, run the filter on the new elements, if no continuo, if no for 10 samples, its stable, stop interval.
+
+        // Home Screen , Suggestion col, End video screen 
+        const query = 'ytd-rich-item-renderer, ytd-compact-video-renderer, .ytp-videowall-still';
 
         // Run the filter only when the query return a stable amount of DOM elements (probably finished rendering)
-        runWhenQueryReturnSomething(query, () => {
-            var videos = document.querySelectorAll(query);  // https://stackoverflow.com/questions/23988982/removing-htmlcollection-elements-from-the-dom
-            var deleteMe = " "
+        runWhenQueryReturnSomethingStable(query, () => {
+            let videos = document.querySelectorAll(query);  // https://stackoverflow.com/questions/23988982/removing-htmlcollection-elements-from-the-dom
             for (let video of videos) {
                 let channelName = getChannelNameOfVideoContainer(video);
 
                 switch (res.user.list.TYPE) {
                     case res.CONST.LIST_TYPE.BLACK_LIST:
                         if (channelName in res.user.list.LIST) {
-                            deleteMe = deleteMe + channelName + ', '
                             video.remove();
                         }
                         break;
                     case res.CONST.LIST_TYPE.WHITE_LIST:
                         if (channelName && !(channelName in res.user.list.LIST)) {
-                            deleteMe = deleteMe + channelName + ', '
                             video.remove();
                         }
                         break;
                 }
             }
-            alert("filter!" + deleteMe);
             removeLoadingAnimation()
         });
 
 
         function getChannelNameOfVideoContainer(videoContainer) {
             try {
-                return videoContainer.querySelector('#channel-name').innerText;
+                if (videoContainer.tagName.toLowerCase() === "ytd-rich-item-renderer" ||
+                    videoContainer.tagName.toLowerCase() === "ytd-compact-video-renderer")
+                    return videoContainer.querySelector('#channel-name').innerText;
+                else if (videoContainer.classList.contains("ytp-videowall-still")) {
+                    return videoContainer.querySelectorAll('.ytp-videowall-still-info-author')[0].innerText.split('•')[0].trim();
+                }
             } catch (error) {
                 if (res.devMode === res.CONST.DEV_MODE.DEV) {
                     console.error("getChannelNameOfVideoContainer didn't found channel name. Original Error -> " + error);
@@ -43,25 +48,23 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
             }
         }
 
-        function runWhenQueryReturnSomething(query, myFunc) {
-            let matchingElementsLength;;
+        function runWhenQueryReturnSomethingStable(query, myFunc) {
+            let matchingElementsLength;
             const myInterval = setInterval(() => {
                 matchingElementsLength = document.querySelectorAll(query).length;
                 if (matchingElementsLength > 0 &&
                     queryIsStableForTheLastIntervals(3, matchingElementsLength)) {
                     clearInterval(myInterval);
-                    alert("The number of elements founded: " + matchingElementsLength);
                     myFunc();
                 }
-            }, 400);
+            }, 300);
         }
 
-        let matchingElementsLengthArray = [];
+        let matchingElementsLengthHistoryArray = [];
         function queryIsStableForTheLastIntervals(stableIntervals, matchingElementsLength) {
-            matchingElementsLengthArray.push(matchingElementsLength);
-            console.log(matchingElementsLength);
-            if (stableIntervals <= matchingElementsLengthArray.length) {
-                let relevantIntervalsArray = matchingElementsLengthArray.slice(-(stableIntervals));
+            matchingElementsLengthHistoryArray.push(matchingElementsLength);
+            if (stableIntervals <= matchingElementsLengthHistoryArray.length) {
+                let relevantIntervalsArray = matchingElementsLengthHistoryArray.slice(-(stableIntervals));
                 let areLastIntervalsEqual = relevantIntervalsArray.every(e => e === relevantIntervalsArray[0]);
                 return areLastIntervalsEqual;
             }
@@ -73,6 +76,5 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
             if (element)
                 element.remove();
         }
-
     }
 });
