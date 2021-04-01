@@ -8,6 +8,7 @@
     },
     "permissions": [
         "storage",
+        "tabs",
         "webRequest",
         "scripting"
     ],

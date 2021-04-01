@@ -16,8 +16,8 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.webRequest.onCompleted.addListener( // onCompleted? onResponseStarted? just try in real time, with no debugging, black list and white list, what works better.
     details => {
         console.log("relevant web request completed");
-        runScript('filter.js', details.tabId);
-        runScript('searchOnly.js', details.tabId);
+        runScript('./contentScripts/filter.js', details.tabId);
+        runScript('./contentScripts/searchOnly.js', details.tabId);
     },
     { urls: youTubeAskMoreVideosURLs });
 
@@ -28,8 +28,8 @@ chrome.webRequest.onCompleted.addListener(
         var url = new URL(details.url);
         // If the current time and length of the video are the same, it's the end.  
         if (url.searchParams.get("cmt") === url.searchParams.get("len")) {
-            runScript('filter.js', details.tabId);
-            runScript('searchOnly.js', details.tabId);
+            runScript('./contentScripts/filter.js', details.tabId);
+            runScript('./contentScripts/searchOnly.js', details.tabId);
         }
     },
     { urls: watchTimeStatsUrl });
@@ -42,14 +42,20 @@ chrome.runtime.onMessage.addListener(
                 case "getMyURL":
                     sendResponse({ url: sender.tab.url });
                     break;
-                default:
+                case "reloadAllYouTubeTabs":
+                    // Should I reload all youtube tabs or just the one open?
+                    // chrome.tabs.query({ active: true }, callback);
+                    chrome.tabs.query({ url: "*://www.youtube.com/*" }, (tabs) => {
+                        for (let tab of tabs) {
+                            chrome.tabs.reload(tab.id, () => { });
+                        }
+                    });
             }
         }
     }
 );
 
 // --- Extra Functions ---
-
 function runScript(scriptPath, tabId) {
     chrome.scripting.executeScript(
         {
