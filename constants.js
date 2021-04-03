@@ -5,10 +5,11 @@ const LIST_TYPE = {
 }
 
 // --- Constants that are being used also in content scripts --- 
-const CONSTANTS = Object.freeze({
+const CONST = Object.freeze({
     EXTN_MODE: {
         SEARCH_ONLY: "searchOnly",
         FILTER: "filter",
+        NO_THUMBNAILS: "noThumbnails",
         OFF: "off"
     },
     DEV_MODE: {
@@ -53,16 +54,18 @@ const CONSTANTS = Object.freeze({
     LIST_TYPE: LIST_TYPE,
 });
 
-// --- Constants that are being used only in "service_worker" files and popup.js --- 
+// --- Constants that are being used only in "service_worker"  files and/or popup.js --- 
 // This way we can save up some space in Storage API.
 // If we want to use something in a content script, move the const to CONST (above me)
-const youTubeAskMoreVideosURLs = [
+const youTubeNavigateToNewPageUrls = [
     "https://www.youtube.com/",
     "https://www.youtube.com/feed/explore",
     "https://www.youtube.com/feed/subscriptions",
+    "https://www.youtube.com/watch?v*", // Watching a video    
+]
+
+const youTubeRequestMoreVideosURLs = [
     "https://www.youtube.com/youtubei/v1/browse?*", // Home screen - scrolling down
-    "https://www.youtube.com/watch?v*", // Watching a video
-    // "https://www.youtube.com/s/player/*/endscreen.js", // Before end of a video
     "https://www.youtube.com/youtubei/v1/next?*" // When watching a video, the suggestionCol - scrolling down
 ]
 

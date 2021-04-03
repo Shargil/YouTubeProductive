@@ -1,9 +1,10 @@
-// Setting the mode to the previews saved
+
 chrome.storage.sync.get(["CONST", "user"], (res) => {
-    selectLastModeRadioButton(res.user.extensionMode);
+    setModeButtonToPreviewsSaved(res.user.extensionMode);
 
     document.getElementById('searchOnly').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.SEARCH_ONLY);
     document.getElementById('filter').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.FILTER);
+    document.getElementById('noThumbnails').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.NO_THUMBNAILS);
     document.getElementById('off').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.OFF);
 
     function onModeClick(mode) {
@@ -18,6 +19,11 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
                     chrome.runtime.sendMessage({ contentScriptFuncs: "reloadAllYouTubeTabs" }, (res) => { });
                 });
                 break;
+            case res.CONST.EXTN_MODE.NO_THUMBNAILS:
+                chrome.storage.sync.set({ user: { extensionMode: res.CONST.EXTN_MODE.NO_THUMBNAILS } }, () => {
+                    chrome.runtime.sendMessage({ contentScriptFuncs: "reloadAllYouTubeTabs" }, (res) => { });
+                });
+                break;
             case res.CONST.EXTN_MODE.OFF:
                 chrome.storage.sync.set({ user: { extensionMode: res.CONST.EXTN_MODE.OFF } }, () => {
                     chrome.runtime.sendMessage({ contentScriptFuncs: "reloadAllYouTubeTabs" }, (res) => { });
@@ -27,7 +33,7 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
         }
     }
 
-    function selectLastModeRadioButton(extensionMode) {
+    function setModeButtonToPreviewsSaved(extensionMode) {
         let extensionModeElement = document.querySelector("#extensionModeContainer #" + extensionMode);
         extensionModeElement.checked = true;
     }
