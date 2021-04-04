@@ -15,7 +15,6 @@ if (thumbnailsVideoPreview) {
     }
 }
 
-
 var channelsIcon = document.querySelectorAll('#details #avatar img');
 if (channelsIcon) {
     for (let icon of channelsIcon) {

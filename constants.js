@@ -29,7 +29,7 @@ const CONST = Object.freeze({
                 "Movieclips": true,
                 "IMPAULSIVE Clips": true,
                 "Mumbo Jumbo": true,
-
+                "Linus Tech Tips": true
             }
         },
         DEFAULT_WHITE: {

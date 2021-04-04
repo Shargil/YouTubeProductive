@@ -1,12 +1,13 @@
 console.log("--- filter.js --- ");
 chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
+    debugger;
 
     // Maybe I should take a different approach:
     // sample every 100ms
     // If something new found from query, run the filter on the new elements, if no continuo, if no for 10 samples, its stable, stop interval.
 
-    // Home Screen , Suggestion col, End video screen 
-    const query = 'ytd-rich-item-renderer, ytd-compact-video-renderer, .ytp-videowall-still';
+    // Home Screen, Smaller Subscription feed, Suggestion col, End video screen 
+    const query = 'ytd-rich-item-renderer, ytd-grid-video-renderer, ytd-compact-video-renderer, .ytp-videowall-still';
 
     // Run the filter only when the query return a stable amount of DOM elements (probably finished rendering)
     runWhenQueryReturnSomethingStable(query, () => {
@@ -17,11 +18,13 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
             switch (res.user.list.TYPE) {
                 case res.CONST.LIST_TYPE.BLACK_LIST:
                     if (channelName in res.user.list.LIST) {
+                        console.log(channelName);
                         video.remove();
                     }
                     break;
                 case res.CONST.LIST_TYPE.WHITE_LIST:
                     if (channelName && !(channelName in res.user.list.LIST)) {
+                        console.log(channelName);
                         video.remove();
                     }
                     break;
@@ -30,14 +33,18 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
         removeLoadingAnimation()
     });
 
-
     function getChannelNameOfVideoContainer(videoContainer) {
         try {
             if (videoContainer.tagName.toLowerCase() === "ytd-rich-item-renderer" ||
+                videoContainer.tagName.toLowerCase() === "ytd-compact-video-renderer" ||
                 videoContainer.tagName.toLowerCase() === "ytd-compact-video-renderer")
                 return videoContainer.querySelector('#channel-name').innerText;
             else if (videoContainer.classList.contains("ytp-videowall-still")) {
                 return videoContainer.querySelectorAll('.ytp-videowall-still-info-author')[0].innerText.split('•')[0].trim();
+            } else {
+                if (res.devMode === res.CONST.DEV_MODE.DEV) {
+                    console.log("getChannelNameOfVideoContainer: The container was not recognized")
+                }
             }
         } catch (error) {
             if (res.devMode === res.CONST.DEV_MODE.DEV) {
