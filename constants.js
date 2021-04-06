@@ -29,7 +29,8 @@ const CONST = Object.freeze({
                 "Movieclips": true,
                 "IMPAULSIVE Clips": true,
                 "Mumbo Jumbo": true,
-                "Linus Tech Tips": true
+                "Linus Tech Tips": true,
+                "airrack": true,
             }
         },
         DEFAULT_WHITE: {
@@ -48,6 +49,7 @@ const CONST = Object.freeze({
                 "Calisthenicmovement": true,
                 "Great Big Story": true,
                 "SmarterEveryDay": true,
+                "Real Engineering": true
             }
         },
     },

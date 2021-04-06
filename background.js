@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(function () {
             list: CONST.LISTS.DEFAULT_BLACK
         }
     }, () => { });
-    chrome.storage.sync.set({ devMode: CONST.DEV_MODE.PROD }, () => { });
+    chrome.storage.sync.set({ devMode: CONST.DEV_MODE.DEV }, () => { });
 });
 
 // --- On YouTube Navigate To new Page With Videos Suggestions --- 

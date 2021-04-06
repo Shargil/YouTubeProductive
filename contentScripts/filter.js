@@ -19,13 +19,16 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
                 case res.CONST.LIST_TYPE.BLACK_LIST:
                     if (channelName in res.user.list.LIST) {
                         console.log(channelName);
-                        video.remove();
+                        video.querySelector('#thumbnail').remove();
+                        // video.remove();
                     }
                     break;
                 case res.CONST.LIST_TYPE.WHITE_LIST:
                     if (channelName && !(channelName in res.user.list.LIST)) {
                         console.log(channelName);
-                        video.remove();
+                        video.querySelector('#thumbnail').remove();
+                        // video.remove();
+
                     }
                     break;
             }
@@ -37,7 +40,7 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
         try {
             if (videoContainer.tagName.toLowerCase() === "ytd-rich-item-renderer" ||
                 videoContainer.tagName.toLowerCase() === "ytd-compact-video-renderer" ||
-                videoContainer.tagName.toLowerCase() === "ytd-compact-video-renderer")
+                videoContainer.tagName.toLowerCase() === "ytd-grid-video-renderer")
                 return videoContainer.querySelector('#channel-name').innerText;
             else if (videoContainer.classList.contains("ytp-videowall-still")) {
                 return videoContainer.querySelectorAll('.ytp-videowall-still-info-author')[0].innerText.split('•')[0].trim();
