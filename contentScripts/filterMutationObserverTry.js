@@ -12,7 +12,7 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
     // https://stackoverflow.com/questions/38881301/observe-mutations-on-a-target-node-that-doesnt-exist-yet/38882022#38882022
 
     // --- Home Page Filter ---
-    waitForAddedNode('contents', document.getElementsByTagName('body'), false,
+    waitForAddedNode('contents', document.getElementsByTagName('body')[0], false,
         (elementNode) => {
             let videoContainerTagHomePage = "ytd-rich-item-renderer";
             let queryChannelHomePage = '#channel-name';

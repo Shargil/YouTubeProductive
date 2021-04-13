@@ -19,15 +19,15 @@ chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
                 case res.CONST.LIST_TYPE.BLACK_LIST:
                     if (channelName in res.user.list.LIST) {
                         console.log(channelName);
-                        video.querySelector('#thumbnail').remove();
-                        // video.remove();
+                        // video.querySelector('#thumbnail').remove();
+                        video.remove();
                     }
                     break;
                 case res.CONST.LIST_TYPE.WHITE_LIST:
                     if (channelName && !(channelName in res.user.list.LIST)) {
                         console.log(channelName);
-                        video.querySelector('#thumbnail').remove();
-                        // video.remove();
+                        // video.querySelector('#thumbnail').remove();
+                        video.remove();
 
                     }
                     break;
