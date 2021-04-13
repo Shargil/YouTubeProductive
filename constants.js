@@ -9,7 +9,7 @@ const CONST = Object.freeze({
     EXTN_MODE: {
         SEARCH_ONLY: "searchOnly",
         FILTER: "filter",
-        NO_THUMBNAILS: "noThumbnails",
+        ANOTHER_OPTION: "anotherOption",
         OFF: "off"
     },
     DEV_MODE: {
