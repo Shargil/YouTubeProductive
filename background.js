@@ -29,15 +29,7 @@ chrome.webRequest.onCompleted.addListener( // onCompleted? onResponseStarted? ju
     details => {
         console.log("--- On YouTube Request More Videos ---" + details.url);
         chrome.storage.sync.get("user", (res) => {
-            switch (res.user.extensionMode) {
-                case CONST.EXTN_MODE.FILTER:
-                    runScript('./contentScripts/filter.js', details.tabId);
-                    break;
-                case CONST.EXTN_MODE.NO_THUMBNAILS:
-                    runScript('./contentScripts/noThumbnails.js', details.tabId);
-                    break;
-            }
-            // runExtensionModeScript(res.user.extensionMode, details.tabId); I don't need onlySearch to run every time more videos are being asked. It needs to run only when the user change page. On the other hand those request will probably not be called on onlySearch because you cant scroll down (I am not sure about it).
+            runExtensionModeScript(res.user.extensionMode, details.tabId); // I need search only to run here as well because sometimes when moving between home/ explore/ subscriptions feeds, the youTubeNavigateToNewPageUrls doesn't call but just "...browse?...", which is in youTubeRequestMoreVideosURLs.
         });
     },
     { urls: youTubeRequestMoreVideosURLs });
@@ -72,8 +64,21 @@ chrome.runtime.onMessage.addListener(
                             chrome.tabs.reload(tab.id, () => { });
                         }
                     });
+                    break;
+                case "reloadCurrYouTubeTab":
+                    chrome.tabs.query({ active: true, currentWindow: true, url: "*://www.youtube.com/*" }, (tabs) => {
+                        if (tabs.length === 1)
+                            chrome.tabs.reload(tabs[0].id, () => { });
+                        else {
+                            if (tabs.length >= 2)
+                                console.error("Up to 1 tab should be selected in reloadCurrYouTubeTab! If inspect elements was open when error was thrown its fine.");
+                            // if it's 0 just don't refresh.
+                        }
+
+                    });
             }
         }
+        return true; // https://stackoverflow.com/questions/54126343/how-to-fix-unchecked-runtime-lasterror-the-message-port-closed-before-a-respon second answer
     }
 );
 
