@@ -63,7 +63,10 @@ const youTubeNavigateToNewPageUrls = [
     "https://www.youtube.com/",
     "https://www.youtube.com/feed/explore",
     "https://www.youtube.com/feed/subscriptions",
+    "https://www.youtube.com/feed/library",
+    "https://www.youtube.com/playlist?*",
     "https://www.youtube.com/watch?v*", // Watching a video    
+
 ]
 
 const youTubeRequestMoreVideosURLs = [
