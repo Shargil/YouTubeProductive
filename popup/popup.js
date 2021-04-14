@@ -80,9 +80,13 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
 
 
             function changeMode() {
-                chrome.storage.sync.set({ user: { extensionMode: wantedMode } }, () => {
-                    chrome.runtime.sendMessage({ contentScriptFuncs: "reloadCurrYouTubeTab" }, (res) => { });
-                    event.target.checked = true;
+                chrome.storage.sync.get("user", (res) => {
+                    let updatedUser = res.user;
+                    updatedUser.extensionMode = wantedMode;
+                    chrome.storage.sync.set({ user: updatedUser }, () => {
+                        chrome.runtime.sendMessage({ contentScriptFuncs: "reloadCurrYouTubeTab" }, (res) => { });
+                        event.target.checked = true;
+                    });
                 });
             }
         });
