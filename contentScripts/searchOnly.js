@@ -1,8 +1,10 @@
 console.log("--- searchOnly.js --- ");
 
-setTimeout(() => {
-    searchOnly();
-}, 0);
+// setTimeout(() => {
+//     searchOnly();
+// }, 0);
+
+onNavigationProgressBarEnd(searchOnly, searchOnly);
 
 function searchOnly() {
 
@@ -12,7 +14,7 @@ function searchOnly() {
         browse.remove();
     }
 
-    var suggestionsCol = document.getElementsByTagName('ytd-watch-next-secondary-results-renderer')[0]
+    var suggestionsCol = document.getElementById('secondary');
     if (suggestionsCol)
         suggestionsCol.remove();
 
