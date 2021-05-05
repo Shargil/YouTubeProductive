@@ -1,3 +1,12 @@
+// So background.js can ask if file is injected
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        if (request.background === "is sharedFunctions.js injected?")
+            return true;
+        return true;
+    }
+);
+
 function onNavigationProgressBarEnd(onProgressEndCallBack, onProgressBarNotExistCallBack) {
 
     const progressElement = document.getElementsByTagName("yt-page-navigation-progress")[0];

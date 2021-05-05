@@ -25,7 +25,6 @@ try {
             chrome.webNavigation.onCompleted.addListener(
                 function onComplete() {
                     console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
-                    runScript("./contentScripts/sharedFunctions.js", details.tabId);
                     runExtensionModeScript(details.tabId);
                     chrome.webNavigation.onCompleted.removeListener(onComplete);
                 });
@@ -35,10 +34,8 @@ try {
     // --- On YouTube Navigate to new Page (URL) With Videos Suggestions --- 
     chrome.tabs.onUpdated.addListener(
         function (tabId, changeInfo, tab) {
-            debugger;
             if (changeInfo.url &&
                 isOneOfListedYouTubeUrls(changeInfo.url)) {
-                debugger;
                 if (makeSureNotSameVideoWatchBug(changeInfo.url)) {
                     console.log("--- On YouTube Navigate To new Page With Videos Suggestions --- " + changeInfo.url);
                     runExtensionModeScript(tabId);
@@ -121,6 +118,16 @@ try {
     }
 
     function runScript(scriptPath, tabId) {
+        chrome.tabs.sendMessage(tabId, { backgroundFuncs: "is sharedFunctions.js injected?" }, function (response) {
+            // If listener doesn't exist, inject sharedFunctions
+            if (response === undefined) {
+                __runScript("./contentScripts/sharedFunctions.js", tabId);
+            }
+            __runScript(scriptPath, tabId);
+        });
+    }
+
+    function __runScript(scriptPath, tabId) {
         chrome.scripting.executeScript(
             {
                 target: { tabId: tabId },
