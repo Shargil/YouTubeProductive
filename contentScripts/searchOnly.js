@@ -1,9 +1,5 @@
 console.log("--- searchOnly.js --- ");
 
-// setTimeout(() => {
-//     searchOnly();
-// }, 0);
-
 onNavigationProgressBarEnd(searchOnly, searchOnly);
 
 function searchOnly() {
