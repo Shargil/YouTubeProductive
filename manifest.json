@@ -10,7 +10,8 @@
         "storage",
         "tabs",
         "webRequest",
-        "scripting"
+        "scripting",
+        "webNavigation"
     ],
     "host_permissions": [
         "https://www.youtube.com/*"

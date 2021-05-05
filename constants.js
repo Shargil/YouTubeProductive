@@ -31,6 +31,8 @@ const CONST = Object.freeze({
                 "Mumbo Jumbo": true,
                 "Linus Tech Tips": true,
                 "airrack": true,
+                "MrBeast Shorts": true,
+                "David Dobrik": true
             }
         },
         DEFAULT_WHITE: {
@@ -59,14 +61,13 @@ const CONST = Object.freeze({
 // --- Constants that are being used only in "service_worker"  files and/or popup.js --- 
 // This way we can save up some space in Storage API.
 // If we want to use something in a content script, move the const to CONST (above me)
-const youTubeNavigateToNewPageUrls = [
-    "https://www.youtube.com/",
-    "https://www.youtube.com/feed/explore",
-    "https://www.youtube.com/feed/subscriptions",
-    "https://www.youtube.com/feed/library",
-    "https://www.youtube.com/playlist?*",
-    "https://www.youtube.com/watch?v*", // Watching a video    
-
+const youTubeUrlsRegExp = [
+    new RegExp("^(https:\/\/www\.youtube\.com\/)$"),
+    new RegExp("^(https:\/\/www\.youtube\.com\/feed\/explore)$"),
+    new RegExp("^(https:\/\/www\.youtube\.com\/feed\/subscriptions)$"),
+    new RegExp("^(https:\/\/www\.youtube\.com\/feed\/library)$"),
+    new RegExp("^(https:\/\/www\.youtube\.com\/playlist\?)"),
+    new RegExp("^(https:\/\/www\.youtube\.com\/watch\?)")// Watching a video    
 ]
 
 const youTubeRequestMoreVideosURLs = [
