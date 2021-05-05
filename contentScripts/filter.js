@@ -1,89 +1,158 @@
-console.log("--- filter.js --- ");
-chrome.storage.sync.get(["CONST", "user", "devMode"], (res) => {
-    debugger;
 
-    // Maybe I should take a different approach:
-    // sample every 100ms
-    // If something new found from query, run the filter on the new elements, if no continuo, if no for 10 samples, its stable, stop interval.
+console.log("--- main filter.js run ---")
 
-    // Home Screen, Smaller Subscription feed, Suggestion col, End video screen 
-    const query = 'ytd-rich-item-renderer, ytd-grid-video-renderer, ytd-compact-video-renderer, .ytp-videowall-still';
 
-    // Run the filter only when the query return a stable amount of DOM elements (probably finished rendering)
-    runWhenQueryReturnSomethingStable(query, () => {
-        let videos = document.querySelectorAll(query);  // https://stackoverflow.com/questions/23988982/removing-htmlcollection-elements-from-the-dom
-        for (let video of videos) {
-            let channelName = getChannelNameOfVideoContainer(video);
+// --- init ---
+var CONST;
+var user;
+chrome.storage.sync.get(["CONST", "user"], (res) => {
+    CONST = Object.freeze(res.CONST);
+    user = Object.freeze(res.user);
+});
 
-            switch (res.user.list.TYPE) {
-                case res.CONST.LIST_TYPE.BLACK_LIST:
-                    if (channelName in res.user.list.LIST) {
-                        console.log(channelName);
-                        // video.querySelector('#thumbnail').remove();
-                        video.remove();
-                    }
-                    break;
-                case res.CONST.LIST_TYPE.WHITE_LIST:
-                    if (channelName && !(channelName in res.user.list.LIST)) {
-                        console.log(channelName);
-                        // video.querySelector('#thumbnail').remove();
-                        video.remove();
+var query = 'ytd-rich-item-renderer, ytd-grid-video-renderer, ytd-compact-video-renderer';
+var videosFilteredIndexes = []; // Indexes are static- before removing of some elements.
+var lastPrecessedVideoIndex = 0;
+var scrollPosition = 0;
 
-                    }
-                    break;
-            }
-        }
-        removeLoadingAnimation()
+
+// --- Run ---
+// When you navigate between pages in the website
+onNavigationProgressBarEnd(() => {
+    setTimeout(() => {
+        filter();
+    }, 500);
+},
+    () => {
+        console.log("progress bar didn't exist!")
+        setTimeout(() => {
+            filter();
+        }, 500);
     });
 
-    function getChannelNameOfVideoContainer(videoContainer) {
-        try {
-            if (videoContainer.tagName.toLowerCase() === "ytd-rich-item-renderer" ||
-                videoContainer.tagName.toLowerCase() === "ytd-compact-video-renderer" ||
-                videoContainer.tagName.toLowerCase() === "ytd-grid-video-renderer")
-                return videoContainer.querySelector('#channel-name').innerText;
-            else if (videoContainer.classList.contains("ytp-videowall-still")) {
-                return videoContainer.querySelectorAll('.ytp-videowall-still-info-author')[0].innerText.split('•')[0].trim();
-            } else {
-                if (res.devMode === res.CONST.DEV_MODE.DEV) {
-                    console.log("getChannelNameOfVideoContainer: The container was not recognized")
-                }
-            }
-        } catch (error) {
-            if (res.devMode === res.CONST.DEV_MODE.DEV) {
-                console.error("getChannelNameOfVideoContainer didn't found channel name. Original Error -> " + error);
-                console.error(videoContainer);
-            }
-            return null;
+window.onscroll = function () {
+    scrollPosition = parseInt(document.documentElement.scrollTop);
+};
+
+
+// --- filter ---
+/**
+ * Get Videos
+ * Go through all of them
+ *      See witch one to remove
+ *      Save the removed ones
+ */
+function filter() {
+    console.log("--- filter() - filter.js ---")
+
+    let videos = document.querySelectorAll(query);
+    for (const [i, video] of videos.entries()) {
+        let channelName = getChannelNameOfVideoContainer(video);
+        if (shouldRemoveVideo(channelName)) {
+            video.remove();
+            videosFilteredIndexes.push(i);
+        }
+        lastPrecessedVideoIndex = i;
+    }
+    console.log("lastPrecessedVideoIndex: " + lastPrecessedVideoIndex);
+}
+
+// Calling this function from different file, that we inject to the
+// same tab (same isolated world), thus it recognize this function
+function newVideos() {
+    if (lastPrecessedVideoIndex > 0) {
+        filterNewVideos();
+    }
+}
+
+
+/**
+ * Don't run when filter just run    
+ * Get Videos
+ * Remove known ones
+ * Go through the new ones
+ *      See witch one to remove
+ *      Save the removed ones
+ */
+function filterNewVideos() {
+    console.log("--- filterNewVideos() - filter.js ---")
+    let videos = document.querySelectorAll(query);
+
+    testIfFirstFilteredIndexIsMistake(videos);
+
+    // Remove videos that we all ready known we should filter
+    for (videoIndex of videosFilteredIndexes) {
+        videos[videoIndex].remove();
+    }
+
+    // Go through only the new videos
+    for (let i = lastPrecessedVideoIndex + 1; i < videos.length; i++) {
+        let channelName = getChannelNameOfVideoContainer(videos[i]);
+        if (shouldRemoveVideo(channelName)) {
+            videos[i].remove();
+            videosFilteredIndexes.push(i);
+        }
+        lastPrecessedVideoIndex = i;
+    }
+
+
+    // If we don't save the value, it start scrolling, update scrollPosition, and get stuck after little change
+    var currScrollPosition = scrollPosition
+    document.documentElement.scrollTop = currScrollPosition;
+}
+function filterEndOfVideoVideos() {
+    console.log("--- filterEndOfVideoVideos() - filter.js ---");
+
+    let videos = document.querySelectorAll('.ytp-videowall-still');
+    for (const [i, video] of videos.entries()) {
+        let channelName = getChannelNameOfVideoContainer(video);
+        if (shouldRemoveVideo(channelName)) {
+            video.remove();
         }
     }
+}
 
-    function runWhenQueryReturnSomethingStable(query, myFunc) {
-        let matchingElementsLength;
-        const myInterval = setInterval(() => {
-            matchingElementsLength = document.querySelectorAll(query).length;
-            if (matchingElementsLength > 0 &&
-                queryIsStableForTheLastIntervals(3, matchingElementsLength)) {
-                clearInterval(myInterval);
-                myFunc();
-            }
-        }, 300);
-    }
 
-    let matchingElementsLengthHistoryArray = [];
-    function queryIsStableForTheLastIntervals(stableIntervals, matchingElementsLength) {
-        matchingElementsLengthHistoryArray.push(matchingElementsLength);
-        if (stableIntervals <= matchingElementsLengthHistoryArray.length) {
-            let relevantIntervalsArray = matchingElementsLengthHistoryArray.slice(-(stableIntervals));
-            let areLastIntervalsEqual = relevantIntervalsArray.every(e => e === relevantIntervalsArray[0]);
-            return areLastIntervalsEqual;
+// --- Filter Extra Functions ---
+function notFirstFilterForThisScript() {
+    return lastPrecessedVideoIndex > 0;
+}
+
+function testIfFirstFilteredIndexIsMistake(videos) {
+    if (videosFilteredIndexes[0]) {
+        let channelName = getChannelNameOfVideoContainer(videos[videosFilteredIndexes[0]]);
+        if (!shouldRemoveVideo(channelName)) {
+            throw new Error("First index to be removed is not spoused to be removed!");
         }
-        return false;
     }
+}
 
-    function removeLoadingAnimation() {
-        let element = document.querySelectorAll('ytd-watch-next-secondary-results-renderer paper-spinner')[0];
-        if (element)
-            element.remove();
+function shouldRemoveVideo(channelName) {
+    if (user.list.TYPE === CONST.LIST_TYPE.BLACK_LIST) {
+        if (channelName in user.list.LIST) {
+            console.log(channelName);
+            // video.querySelector('#thumbnail').remove();
+            return true;
+        }
+    } else { // it's a white list
+        if (channelName && !(channelName in user.list.LIST)) {
+            console.log(channelName);
+            // video.querySelector('#thumbnail').remove();
+            return true;
+        }
     }
-});
+    return false;
+}
+
+function getChannelNameOfVideoContainer(videoContainer) {
+    try {
+        if (videoContainer.querySelector('#channel-name'))
+            return videoContainer.querySelector('#channel-name').innerText;
+        else if (videoContainer.querySelectorAll('.ytp-videowall-still-info-author'))
+            return videoContainer.querySelectorAll('.ytp-videowall-still-info-author')[0].innerText.split('•')[0].trim();
+        else
+            console.log("Couldn't find channel name: in getChannelNameOfVideoContainer")
+    } catch (error) {
+        console.log(error);
+    }
+}

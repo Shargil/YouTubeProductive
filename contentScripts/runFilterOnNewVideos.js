@@ -1,0 +1,3 @@
+setTimeout(() => {
+    newVideos();
+}, 0);
