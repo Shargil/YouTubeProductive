@@ -100,27 +100,6 @@ try {
                             }
                         });
                         break;
-                    case "getVideoCategory":
-                        videoID =
-                            fetch("https://youtube-v31.p.rapidapi.com/videos?part=contentDetails%2Csnippet%2Cstatistics&id=" + request.data.videoID, {
-                                "method": "GET",
-                                "headers": {
-                                    "x-rapidapi-key": "06b6013060msh678afa5c6a5cf22p116a90jsn8b2b444ad800",
-                                    "x-rapidapi-host": "youtube-v31.p.rapidapi.com"
-                                }
-                            })
-                                .then((response) => response.json())
-                                .then((responseJSON) => {
-                                    // do stuff with responseJSON here...
-                                    console.log(responseJSON);
-                                    sendResponse({ category: responseJSON.items[0]["snippet"].categoryId });
-                                })
-                                .catch(err => {
-                                    console.error(err);
-                                    return true;
-                                });
-                        break;
-
                 }
             }
             return true; // https://stackoverflow.com/questions/54126343/how-to-fix-unchecked-runtime-lasterror-the-message-port-closed-before-a-respon second answer
