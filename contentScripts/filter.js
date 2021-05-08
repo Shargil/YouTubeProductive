@@ -48,13 +48,37 @@ function filter() {
     let videos = document.querySelectorAll(query);
     for (const [i, video] of videos.entries()) {
         let channelName = getChannelNameOfVideoContainer(video);
-        if (shouldRemoveVideo(channelName)) {
-            video.remove();
-            videosFilteredIndexes.push(i);
+
+
+        let categoryClassStr = '<div style="height: 60px; width: 296px; display: flex; border: 1px solid lightgray; font-size: 12px">    <div style="height: 60px; width: 25%;">        <input type="radio" id="no" name="choice' + i + '" value="no" onclick="changeColor(event, \'no\')">        <label for="no">no</label><br/>        <input type="radio" id="maybe" name="choice' + i + '" value="maybe" onclick="changeColor(event, \'maybe\')">         <label for="maybe">maybe</label><br/>        <input type="radio" id="yes" name="choice' + i + '" value="yes" onclick="changeColor(event, \'yes\')">        <label for="yes">yes</label>    </div>    <script>        function changeColor(event, value) {            let color;            switch(value)            {                case \'no\':                    color = "#FF0000";                break;                case \'maybe\':                    color = "#FFA500";                break;                case \'yes\':                    color = "#00FF00";                break;            }            event.target.parentElement.style.backgroundColor = color;        }    </script>    <div style="width: 35%; margin-left: 20px;">        <div style="height: 33%; width: 100%;  padding-top:5px;">            <span>YT Video Cat</span>        </div>        <div style="height: 66%; width: 100%; padding-top: 6px; font-weight: 700">            <span class="videoYTCat">Waiting...</span>        </div>    </div>    <div style="width: 40%;">        <div style="height: 50%; width: 100%;  padding-top:4px;">            <span>Community cat by channel (my guess)</span>        </div>        <div style="height: 30%; width: 100%;">            <textarea style="width: 90%; font-weight: 700; height: 16px;"></textarea>        </div>    </div></div>'
+        let childElement = video.children[0];
+        let parent = video;
+        parent.style.height = "80%";
+        let helper = document.createElement('div');
+        helper.innerHTML = categoryClassStr;
+        while (helper.firstChild) {
+            parent.insertBefore(helper.firstChild, childElement);
         }
-        lastPrecessedVideoIndex = i;
+
+        try {
+            let currentVideoID = video.querySelector("#thumbnail").getAttribute("href").split('=')[1];
+            setTimeout(() => {
+                chrome.runtime.sendMessage({ contentScriptFuncs: "getVideoCategory", data: { videoID: currentVideoID } }, (res) => {
+                    parent.querySelector(".videoYTCat").innerText = res.category + " - " + CONST.YT_CATEGORY_ID_NAMES[res.category];
+                });
+            }, i * 1000);
+        }
+        catch (e) { }
     }
-    console.log("lastPrecessedVideoIndex: " + lastPrecessedVideoIndex);
+
+
+    //     if (devCategoryMode() && shouldRemoveVideo(channelName)) {
+    //         video.remove();
+    //         videosFilteredIndexes.push(i);
+    //     }
+    //     lastPrecessedVideoIndex = i;
+    // }
+    // console.log("lastPrecessedVideoIndex: " + lastPrecessedVideoIndex);
 }
 
 // Calling this function from different file, that we inject to the
