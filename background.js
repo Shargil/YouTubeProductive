@@ -25,6 +25,7 @@ try {
             chrome.webNavigation.onCompleted.addListener(
                 function onComplete() {
                     console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
+                    runScript("./contentScripts/sharedFunctions.js", details.tabId);
                     runExtensionModeScript(details.tabId);
                     chrome.webNavigation.onCompleted.removeListener(onComplete);
                 });
@@ -34,29 +35,30 @@ try {
     // --- On YouTube Navigate to new Page (URL) With Videos Suggestions --- 
     chrome.tabs.onUpdated.addListener(
         function (tabId, changeInfo, tab) {
+            debugger;
             if (changeInfo.url &&
                 isOneOfListedYouTubeUrls(changeInfo.url)) {
+                debugger;
                 if (makeSureNotSameVideoWatchBug(changeInfo.url)) {
                     console.log("--- On YouTube Navigate To new Page With Videos Suggestions --- " + changeInfo.url);
+                    runScript("./contentScripts/sharedFunctions.js", tabId);
                     runExtensionModeScript(tabId);
                 }
             }
         }
     );
 
-    // --- On YouTube Request Videos ---
+    // --- On YouTube Request More Videos ---
     chrome.webRequest.onCompleted.addListener( // onCompleted? onResponseStarted? just try in real time, with no debugging, black list and white list, what works better.
         details => {
-            console.log("--- On YouTube Request Videos ---" + details.url);
+            console.log("--- On YouTube Request More Videos ---" + details.url);
 
             chrome.storage.sync.get("user", (res) => {
                 if (res.user.extensionMode === CONST.EXTN_MODE.FILTER)
                     runScript("./contentScripts/runFilterOnNewVideos.js", details.tabId)
             });
-            // runExtensionModeScript(details.tabId); // I need "search only" to run here as well because sometimes when moving between home/ explore/ subscriptions feeds, the youTubeNavigateToNewPageUrls doesn't call but just "...browse?...", which is in youTubeRequestMoreVideosURLs.
         },
         { urls: youTubeRequestMoreVideosURLs });
-
 
 
     // --- On YouTube Video Ends ---
@@ -97,6 +99,7 @@ try {
                                 // if it's 0 just don't refresh.
                             }
                         });
+                        break;
                 }
             }
             return true; // https://stackoverflow.com/questions/54126343/how-to-fix-unchecked-runtime-lasterror-the-message-port-closed-before-a-respon second answer
@@ -118,16 +121,6 @@ try {
     }
 
     function runScript(scriptPath, tabId) {
-        chrome.tabs.sendMessage(tabId, { backgroundFuncs: "is sharedFunctions.js injected?" }, function (response) {
-            // If listener doesn't exist, inject sharedFunctions
-            if (response === undefined) {
-                __runScript("./contentScripts/sharedFunctions.js", tabId);
-            }
-            __runScript(scriptPath, tabId);
-        });
-    }
-
-    function __runScript(scriptPath, tabId) {
         chrome.scripting.executeScript(
             {
                 target: { tabId: tabId },
