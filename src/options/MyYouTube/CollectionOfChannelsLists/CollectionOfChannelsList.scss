@@ -1,0 +1,30 @@
+.container {
+    height: 50vh !important;
+    overflow: auto !important;
+    border-right: 1px solid #eee;
+    // border-radius: 5px;
+  }
+
+
+  // --- Scroll---
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #999; 
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #777; 
+}
+  

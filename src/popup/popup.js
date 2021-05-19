@@ -1,5 +1,6 @@
 chrome.storage.sync.get(["CONST", "user"], (res) => {
     setModeButtonToPreviewsSaved(res.user.extensionMode);
+    setMyYouTubeIs(res.user.listType, res.user.fullLists);
 
     document.getElementById('menu-icon').onclick = () => {
         console.log("You clicked on menu!");
@@ -211,6 +212,30 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
     function setModeButtonToPreviewsSaved(extensionMode) {
         let extensionModeElement = document.querySelector("#modes #" + extensionMode);
         extensionModeElement.checked = true;
+    }
+
+    function setMyYouTubeIs(type, fullLists) {
+
+        let htmlString = '<p>My YouTube is' + (type === res.CONST.LIST_TYPE.BLACK_LIST ? ' not' : '') + ': </p>';
+        for (const fullList of fullLists) {
+            htmlString +=
+                '<div class="channels-list-label">' +
+                fullList.name +
+                '<button id="go-to-options" title="Edit lists in Options page">' +
+                '<img src="../assets/Close by AR Ehsan from the Noun Project 1.svg" alt="Close by AR Ehsan from the Noun Project 1.svg"/>' +
+                '</button>' +
+                '</div>'
+        }
+        document.getElementById("mode-options").innerHTML = htmlString.trim();
+
+        const buttons = document.querySelectorAll('#go-to-options');
+        for (const btn of buttons) {
+            btn.onclick = function () {
+                if (chrome.runtime.openOptionsPage) {
+                    chrome.runtime.openOptionsPage();
+                }
+            }
+        }
     }
 
     function listenInputOnEnter() {

@@ -96,11 +96,13 @@ function filterNewVideos() {
         lastPrecessedVideoIndex = i;
     }
 
+    console.log("lastPrecessedVideoIndex: " + lastPrecessedVideoIndex);
 
     // If we don't save the value, it start scrolling, update scrollPosition, and get stuck after little change
     var currScrollPosition = scrollPosition
     document.documentElement.scrollTop = currScrollPosition;
 }
+
 function filterEndOfVideoVideos() {
     console.log("--- filterEndOfVideoVideos() - filter.js ---");
 
@@ -129,14 +131,14 @@ function testIfFirstFilteredIndexIsMistake(videos) {
 }
 
 function shouldRemoveVideo(channelName) {
-    if (user.list.TYPE === CONST.LIST_TYPE.BLACK_LIST) {
-        if (channelName in user.list.LIST) {
+    if (user.listType === CONST.LIST_TYPE.BLACK_LIST) {
+        if (channelName in user.list) {
             console.log(channelName);
             // video.querySelector('#thumbnail').remove();
             return true;
         }
     } else { // it's a white list
-        if (channelName && !(channelName in user.list.LIST)) {
+        if (channelName && !(channelName in user.list)) {
             console.log(channelName);
             // video.querySelector('#thumbnail').remove();
             return true;

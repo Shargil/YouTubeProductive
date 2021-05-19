@@ -1,0 +1,16 @@
+@import '~antd/dist/antd.css';
+
+// $primary-color: darkblue;
+// $background-color: #BADA55;
+
+// Chrome applies an 8px margin by default (gross).
+body {
+    margin: 0px;
+}
+
+.content-container{
+    padding: 24;
+    margin: 0;
+    min-height: 280;
+    background-color: "white";
+}

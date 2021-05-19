@@ -44,7 +44,8 @@ function progressElementFinished(ytPageNavigationElement) {
 
 function timeToRunFunc(func) {
     const t0 = performance.now()
-    func();
+    const output = func();
     const t1 = performance.now()
     console.log("Call took " + (t1 - t0) + " milliseconds.")
+    return output;
 }

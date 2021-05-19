@@ -1,6 +1,5 @@
 try {
     importScripts("constants.js");
-
     // --- On Install ---
     chrome.runtime.onInstalled.addListener(function () {
         console.log("--- On Install ---");
@@ -8,7 +7,8 @@ try {
         chrome.storage.sync.set({
             user: {
                 extensionMode: CONST.EXTN_MODE.FILTER,
-                list: CONST.LISTS.DEFAULT_BLACK
+                list: CONST.LISTS.DEFAULT_BLACK,
+                listType: CONST.LIST_TYPE.BLACK_LIST
             }
         }, () => { });
         chrome.storage.sync.set({
@@ -27,6 +27,7 @@ try {
                     console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
                     runScript("./contentScripts/sharedFunctions.js", details.tabId);
                     runExtensionModeScript(details.tabId);
+                    // openPopup
                     chrome.webNavigation.onCompleted.removeListener(onComplete);
                 });
         }
