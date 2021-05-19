@@ -1,6 +1,7 @@
 import React from "react";
 import { AutoComplete } from "antd";
 
+// TODO: Need to fetch this from server
 const allChannelsListsNames = [];
 for (let i = 0; i < 23; i++) {
   allChannelsListsNames.push({
@@ -13,17 +14,16 @@ const options = allChannelsListsNames.map((item) => {
   return { value: item.id.toString(), label: item.name };
 });
 
-export default function SearchChannelsLists({ onChange }): JSX.Element {
+export default function SearchChannelsLists({
+  onSelectAutoComplete,
+}): JSX.Element {
   const onSelect = (channelsListID) => {
-    onChange(parseInt(channelsListID));
+    onSelectAutoComplete(parseInt(channelsListID));
   };
   return (
     <>
       <AutoComplete
         onSelect={onSelect}
-        style={{
-          maxWidth: "50%",
-        }}
         options={options}
         placeholder="Channels Category like Science or Calisthenics"
         filterOption={(inputValue, option: any) =>

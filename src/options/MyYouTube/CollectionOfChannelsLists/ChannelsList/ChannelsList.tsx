@@ -18,12 +18,6 @@ const IconText = ({ icon, text, className }: any) => (
   </Space>
 );
 
-export interface channel {
-  id: string;
-  name: string;
-  img: string;
-}
-
 export interface channelsList {
   id: number;
   name: string;
@@ -33,10 +27,16 @@ export interface channelsList {
   list: Array<channel>;
 }
 
+export interface channel {
+  id: string;
+  name: string;
+  img: string;
+}
+
 export default function ChannelsList({
   channelsList,
-  onClick,
   remove,
+  onSelect,
   isSelected,
 }): JSX.Element {
   return (
@@ -58,7 +58,7 @@ export default function ChannelsList({
             <CaretDownOutlined className="vote-icon" />
           </Row>
         </Col>
-        <Col span={16} onClick={() => onClick()}>
+        <Col span={16} onClick={() => onSelect()}>
           <Title level={5}>{channelsList.name}</Title>
           <Space split={<Divider type="vertical" />}>
             <IconText

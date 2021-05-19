@@ -8,10 +8,6 @@ import "./options.scss";
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function Options() {
-  useEffect(() => {
-    // Example of how to send a message to eventPage.ts.
-    chrome.runtime.sendMessage({ optionsMounted: true });
-  }, []);
 
   return (
     <>
@@ -42,9 +38,12 @@ export default function Options() {
           </Sider>
           <Layout style={{ padding: "0 24px 24px" }}>
             <Content
-              className="site-layout-background content-container"
+              className="site-layout-background"
               style={{
-                
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+                backgroundColor: "white",
               }}
             >
               <MyYouTube></MyYouTube>
