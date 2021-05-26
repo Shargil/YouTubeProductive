@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-// import "antd/dist/antd.css";
-import "./smartTimeLimit.scss";
+
 import { Modal, Button, Select } from "antd";
+import "./smartTimeLimit.scss";
 import { User } from "./interfaces/User";
 import * as _ from "lodash/object";
 
@@ -38,17 +38,19 @@ export default function SmartTimeLimit(props): JSX.Element {
 
   // ------ Hooks ------
   React.useEffect(() => {
-    chrome.storage.sync.get("user", (res) => {
-      if (needToBeBlocked(res.user)) {
+    chrome.storage.sync.get("user", ({ user }: { user?: User }) => {
+      if (user.extensionMode === "searchOnly") return;
+
+      if (needToBeBlocked(user)) {
         block();
         return;
       }
 
-      if (didUseYouTubeInTheLast(res.user, 20)) {
+      if (didUseYouTubeInTheLast(user, 20)) {
         console.log("is on 20 min break");
         // Treat it like the user took a 20 min break and remembers he is in a session, resume counting and let them continue normally
         countUse();
-      } else if (didUseYouTubeInTheLast(res.user, 60 * 2)) {
+      } else if (didUseYouTubeInTheLast(user, 60 * 2)) {
         // Was it a long break or the user "stopped"\"ended" the last session before time ended?
         // They expect to continue session or set up a new one? I am not sure, so let's ask.
         alert("ask! continue or set new one");
@@ -226,52 +228,53 @@ export default function SmartTimeLimit(props): JSX.Element {
   };
 
   return (
-    <Modal
-      // title="Let's make an aware decision"
-      title="Session Time - Making an aware decision is better!"
-      // title={<img src={logo} alt="Logo" />}
-      visible={isModalVisible}
-      zIndex={2500}
-      closable={false}
-      keyboard={false}
-      maskClosable={false}
-      destroyOnClose={true}
-      maskStyle={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
-      footer={[
-        // <div class ="footer-container"></div>
-        <>
-          <p className="footer-text">
-            After the time is up, if the video is about to end, no worry, you
-            can finish it :)
-          </p>
-          <Button
-            key="submit"
-            type="primary"
-            onClick={onSave}
-            disabled={limitMinutes === undefined}
-          >
-            Save
-          </Button>
-        </>,
-      ]}
-    >
-      <p>Deicide how much time you want to spend to YouTube right now:</p>
+    <div className="antStyled">
+      <Modal
+        // title="Let's make an aware decision"
+        title="Session Time - Making an aware decision is better!"
+        // title={<img src={logo} alt="Logo" />}
+        visible={isModalVisible}
+        zIndex={2500}
+        closable={false}
+        keyboard={false}
+        maskClosable={false}
+        destroyOnClose={true}
+        maskStyle={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
+        footer={[
+          <div className="footer-container" key={"1"}>
+            <p className="footer-text">
+              After the time is up, if the video is about to end, no worry, you
+              can finish it :)
+            </p>
+            <Button
+              key="submit"
+              type="primary"
+              onClick={onSave}
+              disabled={limitMinutes === undefined}
+            >
+              Save
+            </Button>
+          </div>,
+        ]}
+      >
+        <p>Deicide how much time you want to spend to YouTube right now:</p>
 
-      <div className="select-container">
-        <Select
-          style={{ width: 180 }}
-          dropdownStyle={{ zIndex: 2501 }}
-          onChange={onChangeMinutes}
-          placeholder="Select Session Time"
-        >
-          <Option value="1">1 min</Option>
-          <Option value="30">30 min</Option>
-          <Option value="45">45 min</Option>
-          <Option value="60">60 min</Option>
-          <Option value="90">90 min</Option>
-        </Select>
-      </div>
-    </Modal>
+        <div className="select-container">
+          <Select
+            style={{ width: 180 }}
+            dropdownStyle={{ zIndex: 2501 }}
+            onChange={onChangeMinutes}
+            placeholder="Select Session Time"
+          >
+            <Option value="1">1 min</Option>
+            <Option value="30">30 min</Option>
+            <Option value="45">45 min</Option>
+            <Option value="60">60 min</Option>
+            <Option value="90">90 min</Option>
+          </Select>
+        </div>
+      </Modal>
+    </div>
   );
 }
 
