@@ -8,7 +8,14 @@ try {
             user: {
                 extensionMode: CONST.EXTN_MODE.FILTER,
                 list: CONST.LISTS.DEFAULT_BLACK,
-                listType: CONST.LIST_TYPE.BLACK_LIST
+                listType: CONST.LIST_TYPE.BLACK_LIST,
+                blockUntil: new Date(),
+                smartTimeLimit: {
+                    sessionStartedTime: null,
+                    sessionTimeInM: null,
+                    secondsUsed: {},
+                    blockUntil: null,
+                }
             }
         }, () => { });
         chrome.storage.sync.set({
@@ -26,8 +33,8 @@ try {
                 function onComplete() {
                     console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
                     runScript("./contentScripts/sharedFunctions.js", details.tabId);
+                    runScript("./smartTimeLimit.js", details.tabId);
                     runExtensionModeScript(details.tabId);
-                    // openPopup
                     chrome.webNavigation.onCompleted.removeListener(onComplete);
                 });
         }
@@ -100,6 +107,9 @@ try {
                                 // if it's 0 just don't refresh.
                             }
                         });
+                        break;
+                    case "secondsUsed":
+                        console.log("Tab ID: " + sender.tab.id + ", Current Second: " + request.data.currentSecondUsed)
                         break;
                 }
             }

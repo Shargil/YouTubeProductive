@@ -1,0 +1,21 @@
+@import '~antd/dist/antd.css';
+
+// Chrome applies an 8px margin by default (gross).
+body {
+    margin: 0px;
+}
+
+.select-container{
+    margin-bottom: 1em; 
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-text {
+    font-size: 0.85em;
+    margin-bottom: 0px !important;
+}

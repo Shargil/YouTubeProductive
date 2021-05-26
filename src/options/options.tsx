@@ -8,7 +8,6 @@ import "./options.scss";
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function Options() {
-
   return (
     <>
       <Layout>
