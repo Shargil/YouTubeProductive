@@ -189,7 +189,12 @@ export default function SmartTimeLimit(props): JSX.Element {
   };
 
   const block = () => {
-    document.body.innerHTML = "<div>Blocked!</div>";
+    document.body.innerHTML =
+      "<div style='text-align: center'>" +
+      "<div>The time you set for this session is over! </div>" +
+      "<div>Sometimes stopping watching YouTube is really f*cking annoying, it's helps me think how much hours I could continue and waste.</div>" +
+      "<div>If it was your last day on earth what would you do now?</div>" +
+      "</div>";
   };
 
   // ----- On Events -----
@@ -266,7 +271,7 @@ export default function SmartTimeLimit(props): JSX.Element {
             onChange={onChangeMinutes}
             placeholder="Select Session Time"
           >
-            <Option value="1">1 min</Option>
+            <Option value="15">1 min</Option>
             <Option value="30">30 min</Option>
             <Option value="45">45 min</Option>
             <Option value="60">60 min</Option>

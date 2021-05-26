@@ -97,7 +97,7 @@ export default function MyYouTube(props): JSX.Element {
               initialValues={initialValues}
             >
               <Form.Item name="blackOrWhiteListMode">
-                <Radio.Group>
+                <Radio.Group value={null} onChange={null}>
                   <Radio value={LIST_TYPE.BLACK_LIST}>
                     I want MyYoutube to be everything but:
                   </Radio>

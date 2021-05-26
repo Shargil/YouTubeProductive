@@ -137,7 +137,6 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
         player.addEventListener('complete', onComplete.bind(null, onAnimationEnd), { once: true });
 
         function onComplete(onAnimationEnd) {
-            console.log("heyyyy");
             hideElement(document.getElementById('answer-animation'));
             showElement(document.getElementById('icon-submit'));
             if (onAnimationEnd)
