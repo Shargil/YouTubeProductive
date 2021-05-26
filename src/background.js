@@ -7,9 +7,9 @@ try {
         chrome.storage.sync.set({
             user: {
                 extensionMode: CONST.EXTN_MODE.FILTER,
-                list: CONST.LISTS.DEFAULT_BLACK,
                 listType: CONST.LIST_TYPE.BLACK_LIST,
-                blockUntil: new Date(),
+                list: CONST.LISTS.DEFAULT_BLACK,
+                fullLists: [],
                 smartTimeLimit: {
                     sessionStartedTime: null,
                     sessionTimeInM: null,
