@@ -9,13 +9,7 @@ try {
                 extensionMode: CONST.EXTN_MODE.FILTER,
                 listType: CONST.LIST_TYPE.BLACK_LIST,
                 list: CONST.LISTS.DEFAULT_BLACK,
-                fullLists: [],
-                smartTimeLimit: {
-                    sessionStartedTime: null,
-                    sessionTimeInM: null,
-                    secondsUsed: {},
-                    blockUntil: null,
-                }
+                fullLists: []
             }
         }, () => { });
         chrome.storage.sync.set({
@@ -23,6 +17,17 @@ try {
                 devMode: CONST.DEV_MODE.DEV
             }
         }, () => { });
+
+        // ----- Storage Local! -----
+        chrome.storage.local.set({
+            smartTimeLimit: {
+                sessionTimeInM: null,
+                secondsUsed: {},
+                blockUntil: null,
+            }
+        }, () => { })
+
+        chrome.runtime.openOptionsPage(() => { });
     });
 
     // --- On Entering YouTube (or reloading) --- 
@@ -43,10 +48,8 @@ try {
     // --- On YouTube Navigate to new Page (URL) With Videos Suggestions --- 
     chrome.tabs.onUpdated.addListener(
         function (tabId, changeInfo, tab) {
-            debugger;
             if (changeInfo.url &&
                 isOneOfListedYouTubeUrls(changeInfo.url)) {
-                debugger;
                 if (makeSureNotSameVideoWatchBug(changeInfo.url)) {
                     console.log("--- On YouTube Navigate To new Page With Videos Suggestions --- " + changeInfo.url);
                     runScript("./contentScripts/sharedFunctions.js", tabId);
@@ -89,15 +92,17 @@ try {
                     case "getMyURL":
                         sendResponse({ url: sender.tab.url });
                         break;
-                    case "reloadAllYouTubeTabs":
-                        // Should I reload all youtube tabs or just the one open?
-                        chrome.tabs.query({ url: "*://www.youtube.com/*" }, (tabs) => {
-                            for (let tab of tabs) {
-                                chrome.tabs.reload(tab.id, () => { });
-                            }
-                        });
-                        break;
+                    // case "reloadAllYouTubeTabs":
+                    //     // Should I reload all youtube tabs or just the one open?
+                    //     chrome.tabs.query({ url: "*://www.youtube.com/*" }, (tabs) => {
+                    //         for (let tab of tabs) {
+                    //             chrome.tabs.reload(tab.id, () => { });
+                    //         }
+                    //     });
+                    //     break;
                     case "reloadCurrYouTubeTab":
+                        // TODO: This line below me can replace all other logic in reloadCurrYouTubeTab, go through it and check it
+                        // chrome.tabs.reload(sender.tab.id, () => { });
                         chrome.tabs.query({ active: true, currentWindow: true, url: "*://www.youtube.com/*" }, (tabs) => {
                             if (tabs.length === 1)
                                 chrome.tabs.reload(tabs[0].id, () => { });
@@ -108,9 +113,9 @@ try {
                             }
                         });
                         break;
-                    case "secondsUsed":
-                        console.log("Tab ID: " + sender.tab.id + ", Current Second: " + request.data.currentSecondUsed)
-                        break;
+                    // case "secondsUsed":
+                    //     console.log("Tab ID: " + sender.tab.id + ", Current Second: " + request.data.currentSecondUsed)
+                    //     break;
                 }
             }
             return true; // https://stackoverflow.com/questions/54126343/how-to-fix-unchecked-runtime-lasterror-the-message-port-closed-before-a-respon second answer

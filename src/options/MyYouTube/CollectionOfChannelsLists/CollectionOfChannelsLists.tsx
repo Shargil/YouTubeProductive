@@ -1,5 +1,5 @@
-import { Col, List, Row } from "antd";
 import React from "react";
+import { Col, List, Row } from "antd";
 import "./CollectionOfChannelsList.scss";
 import ChannelsList, { channelsList } from "./ChannelsList/ChannelsList";
 import SearchChannelsLists from "./SearchChannelsLists/SearchChannelsLists";
