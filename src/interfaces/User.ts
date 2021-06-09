@@ -1,4 +1,4 @@
-import { channelsList } from "../options/MyYouTube/CollectionOfChannelsLists/ChannelsList/ChannelsList";
+import { channelsList } from "./ChannelsList";
 
 export interface User {
     extensionMode: String;

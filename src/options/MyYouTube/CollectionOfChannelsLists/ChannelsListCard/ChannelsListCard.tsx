@@ -1,6 +1,6 @@
 import React from "react";
 import UsersIcon from "./UsersIcon";
-import "./ChannelsList.scss";
+import "./ChannelsListCard.scss";
 import { Space, Typography, Row, Col, Divider } from "antd";
 import {
   CaretUpOutlined,
@@ -18,22 +18,7 @@ const IconText = ({ icon, text, className }: any) => (
   </Space>
 );
 
-export interface channelsList {
-  id: number;
-  name: string;
-  author: string;
-  upVotes: number;
-  numOfUsers: number;
-  list: Array<channel>;
-}
-
-export interface channel {
-  id: string;
-  name: string;
-  img: string;
-}
-
-export default function ChannelsList({
+export default function ChannelsListCard({
   channelsList,
   remove,
   onSelect,

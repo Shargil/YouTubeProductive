@@ -3,7 +3,7 @@ import { Row, Col, Typography, Form, Button, Radio, message, Spin } from "antd";
 import { User } from "../../interfaces/User";
 import { LIST_TYPE } from "../../constantsDemo";
 import CollectionOfChannelsLists from "./CollectionOfChannelsLists/CollectionOfChannelsLists";
-import { channelsList } from "./CollectionOfChannelsLists/ChannelsList/ChannelsList";
+import { channelsList } from "../../interfaces/ChannelsList";
 
 const { Title } = Typography;
 

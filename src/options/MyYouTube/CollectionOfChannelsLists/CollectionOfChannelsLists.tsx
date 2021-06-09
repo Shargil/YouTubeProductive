@@ -1,9 +1,10 @@
 import React from "react";
 import { Col, List, Row } from "antd";
 import "./CollectionOfChannelsList.scss";
-import ChannelsList, { channelsList } from "./ChannelsList/ChannelsList";
-import SearchChannelsLists from "./SearchChannelsLists/SearchChannelsLists";
-import ShowChannels from "./ShowChannels/ShowChannels";
+import ChannelsListsSearch from "./ChannelsListsSearch/ChannelsListsSearch";
+import ChannelsListCard from "./ChannelsListCard/ChannelsListCard";
+import ChannelsListShow from "./ChannelsListShow/ChannelsListShow";
+import { channelsList } from "../../../interfaces/ChannelsList";
 
 export default function CollectionOfChannelsLists({
   value = {},
@@ -26,35 +27,7 @@ export default function CollectionOfChannelsLists({
   };
 
   const fetchChannelsList = (id: number): channelsList => {
-    return {
-      id: id,
-      name: `UX/UI ${id}`,
-      author: "Shargil69",
-      upVotes: 20 + id,
-      numOfUsers: 1204 + id,
-      list: [
-        {
-          id: "c/MarkRober",
-          name: "Not Mark Robber",
-          img: "https://yt3.ggpht.com/ytc/AAUvwnhL2suWx4XHAshVXnSqPdXWHR_kQV_m1bkxDJw=s176-c-k-c0x00ffffff-no-rj",
-        },
-        {
-          id: "channel/UCp68_FLety0O-n9QU6phsgw",
-          name: "Not Colin Furze",
-          img: "https://yt3.ggpht.com/ytc/AAUvwnjwlZk_WSLOOmPVUR_hQl6m6G0v8Mq2PX5Kpmo3=s176-c-k-c0x00ffffff-no-rj-mo",
-        },
-        {
-          id: "channel/UCsn6cjffsvyOZCZxvGoJxGg",
-          name: "Not Corddiror Digital",
-          img: "https://yt3.ggpht.com/ytc/AAUvwngV2u6kCW61w-y5xNzy0nqrJE9tIeST4VipdIOs7Q=s176-c-k-c0x00ffffff-no-rj-mo",
-        },
-        {
-          id: "channel/UCVYamHliCI9rw1tHR1xbkfw",
-          name: "Not Dave2D",
-          img: "https://yt3.ggpht.com/ytc/AAUvwniSYmTa5NLqubBNeXbONaln1U2FAIzqrzVNWpjrJw=s176-c-k-c0x00ffffff-no-rj-mo",
-        },
-      ],
-    };
+    return fakeServerFetchingChannelsList(2);
   };
 
   const checkIsSelected = (id) => {
@@ -98,7 +71,7 @@ export default function CollectionOfChannelsLists({
     <>
       <Row style={{ marginBottom: "1em" }}>
         <Col span={14}>
-          <SearchChannelsLists
+          <ChannelsListsSearch
             onSelectAutoComplete={(id) => {
               onSelectAutoComplete(id);
             }}
@@ -114,7 +87,7 @@ export default function CollectionOfChannelsLists({
             dataSource={collection}
             renderItem={(item: channelsList) => (
               <List.Item key={item.id}>
-                <ChannelsList
+                <ChannelsListCard
                   channelsList={item}
                   remove={onRemove}
                   onSelect={() => {
@@ -128,9 +101,45 @@ export default function CollectionOfChannelsLists({
         </Col>
         <Col span={1}></Col>
         <Col span={9}>
-          {selectedItem ? <ShowChannels channelsList={selectedItem} /> : null}
+          {selectedItem ? <ChannelsListShow list={selectedItem.list} /> : null}
         </Col>
       </Row>
     </>
   );
 }
+
+export const fakeServerFetchingChannelsList = (id: number): channelsList => {
+  return {
+    id: id,
+    name: `UX/UI ${id}`,
+    author: "Shargil69",
+    upVotes: 20 + id,
+    numOfUsers: 1204 + id,
+    list: [
+      {
+        id: "c/MarkRober",
+        name: "Not Mark Robber",
+        img: "https://yt3.ggpht.com/ytc/AAUvwnhL2suWx4XHAshVXnSqPdXWHR_kQV_m1bkxDJw=s176-c-k-c0x00ffffff-no-rj",
+        subs: "18.9M",
+      },
+      {
+        id: "channel/UCp68_FLety0O-n9QU6phsgw",
+        name: "Not Colin Furze",
+        img: "https://yt3.ggpht.com/ytc/AAUvwnjwlZk_WSLOOmPVUR_hQl6m6G0v8Mq2PX5Kpmo3=s176-c-k-c0x00ffffff-no-rj-mo",
+        subs: "11M",
+      },
+      {
+        id: "channel/UCsn6cjffsvyOZCZxvGoJxGg",
+        name: "Not Corddiror Digital",
+        img: "https://yt3.ggpht.com/ytc/AAUvwngV2u6kCW61w-y5xNzy0nqrJE9tIeST4VipdIOs7Q=s176-c-k-c0x00ffffff-no-rj-mo",
+        subs: "8.91M",
+      },
+      {
+        id: "channel/UCVYamHliCI9rw1tHR1xbkfw",
+        name: "Not Dave2D",
+        img: "https://yt3.ggpht.com/ytc/AAUvwniSYmTa5NLqubBNeXbONaln1U2FAIzqrzVNWpjrJw=s176-c-k-c0x00ffffff-no-rj-mo",
+        subs: "3.31M",
+      },
+    ],
+  };
+};

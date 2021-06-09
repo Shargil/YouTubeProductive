@@ -1,12 +1,15 @@
 import React from "react";
 import { Avatar, List } from "antd";
-import { channel } from "../ChannelsList/ChannelsList";
+import { channel } from "../../../../interfaces/ChannelsList";
 
-export default function ShoeChannels({ channelsList }): JSX.Element {
+interface t {
+  list: Array<channel>;
+}
+export default function ChannelsListShow({ list }: t): JSX.Element {
   return (
     <List
       itemLayout="horizontal"
-      dataSource={channelsList.list}
+      dataSource={list}
       renderItem={(item: channel) => (
         <List.Item>
           <List.Item.Meta
@@ -17,7 +20,6 @@ export default function ShoeChannels({ channelsList }): JSX.Element {
               </a>
             }
           />
-          {channelsList.id}
         </List.Item>
       )}
     />

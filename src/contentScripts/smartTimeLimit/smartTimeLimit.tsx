@@ -53,7 +53,7 @@ export default function SmartTimeLimit(props): JSX.Element {
           return;
         }
 
-        if (didUseYouTubeInTheLast(res.smartTimeLimit, 1)) {
+        if (didUseYouTubeInTheLast(res.smartTimeLimit, 20)) {
           console.log("is on 20 min break");
           // Treat it like the user took a 20 min break and remembers he is in a session, resume counting and let them continue normally
           countUse();
@@ -75,10 +75,10 @@ export default function SmartTimeLimit(props): JSX.Element {
   }, []);
 
   // ------ Events ------
-  window.addEventListener("focus", function (e) {
-    console.log("Focused");
-    // main();
-  });
+  // window.addEventListener("focus", function (e) {
+  //   console.log("Focused");
+  //   // main();
+  // });
 
   // ------ Extra Functions ------
   const startNewSession = () => {
