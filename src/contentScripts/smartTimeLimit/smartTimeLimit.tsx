@@ -33,7 +33,7 @@ containerElement.setAttribute("id", "smartTimeLimitContainer");
 document.body.appendChild(containerElement);
 
 export default function SmartTimeLimit(props): JSX.Element {
-  // ------ State ------
+  // ----- State -----
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [limitMinutes, setLimitMinutes] = React.useState<number>(undefined);
   const [
@@ -69,18 +69,18 @@ export default function SmartTimeLimit(props): JSX.Element {
     });
   };
 
-  // ------ Hooks ------
+  // ----- Hooks -----
   React.useEffect(() => {
     main();
   }, []);
 
-  // ------ Events ------
+  // ----- Events -----
   // window.addEventListener("focus", function (e) {
   //   console.log("Focused");
   //   // main();
   // });
 
-  // ------ Extra Functions ------
+  // ----- Extra Functions -----
   const startNewSession = () => {
     resetSmartTimeLimit();
     showModal();

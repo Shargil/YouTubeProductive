@@ -14,12 +14,12 @@ interface FormValues {
 }
 
 export default function CreateChannelsList(props): JSX.Element {
-  // ------ State ------
+  // ----- State -----
 
-  // ------ Hooks ------
+  // ----- Hooks -----
   React.useEffect(() => {}, []);
 
-  // ------ Extra Functions ------
+  // ----- Extra Functions -----
 
   // ----- On  Events -----
   const onCreate = (values: FormValues) => {

@@ -17,11 +17,11 @@ interface FormValues {
 export default function MyYouTube(props): JSX.Element {
   const [form] = Form.useForm();
 
-  // ------ State ------
+  // ----- State -----
   const [isSaveDisabled, setIsSaveDisabled] = React.useState(true);
   const [initialValues, setInitialValues] = React.useState<FormValues>(null);
 
-  // ------ Hooks ------
+  // ----- Hooks -----
   useEffect(() => {
     chrome.storage.sync.get("user", (res) => {
       const user: User = res.user;
@@ -34,8 +34,7 @@ export default function MyYouTube(props): JSX.Element {
     });
   });
 
-  // ------ Extra Functions ------
-
+  // ----- Extra Functions -----
   const createPerformanceList: any = (channelsLists) => {
     let newPerformanceList = {};
     for (let key in channelsLists) {

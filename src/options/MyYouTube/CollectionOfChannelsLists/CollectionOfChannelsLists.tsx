@@ -11,12 +11,12 @@ export default function CollectionOfChannelsLists({
   onChange = null,
   initialValues = [],
 }): JSX.Element {
-  // ------ State ------
+  // ----- State -----
   const [collection, setCollection] = React.useState(initialValues);
   const [selectedItem, setSelectedItem] =
     React.useState<channelsList | undefined>();
 
-  // ------ Extra Functions ------
+  // ----- Extra Functions -----
   // This helps make this component work with ant Form https://ant.design/components/form/#components-form-demo-customized-form-controls
   const triggerChange = (changedValue) => {
     onChange?.({
