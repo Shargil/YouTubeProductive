@@ -1,15 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Layout, Menu } from "antd";
-import { PlayCircleTwoTone, UserOutlined } from "@ant-design/icons";
+import {
+  PlayCircleTwoTone,
+  UserOutlined,
+  UnorderedListOutlined,
+} from "@ant-design/icons";
 import MyYouTube from "./MyYouTube/MyYouTube";
 
+import { MemoryRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 import "./options.scss";
+import CreateChannelsList from "./CreateChannelsList/CreateChannelsList";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function Options() {
   return (
-    <>
+    <Router>
       <Layout>
         <Header className="header">
           <div className="logo" />
@@ -23,6 +30,7 @@ export default function Options() {
             >
               <Menu.Item key="1" icon={<PlayCircleTwoTone />}>
                 My YouTube
+                <Link to="/MyYouTube" />
               </Menu.Item>
               <Menu.Item key="2" icon={<UserOutlined />}>
                 option2
@@ -30,8 +38,9 @@ export default function Options() {
               <Menu.Item key="3" icon={<UserOutlined />}>
                 option3
               </Menu.Item>
-              <Menu.Item key="4" icon={<UserOutlined />}>
-                option4
+              <Menu.Item key="4" icon={<UnorderedListOutlined />}>
+                Create Channels List
+                <Link to="/CreateChannelsList" />
               </Menu.Item>
             </Menu>
           </Sider>
@@ -45,13 +54,19 @@ export default function Options() {
                 backgroundColor: "white",
               }}
             >
-              <MyYouTube></MyYouTube>
+              <Switch>
+                <Route path="/MyYouTube">
+                  <MyYouTube />
+                </Route>
+                <Route path="/CreateChannelsList">
+                  <CreateChannelsList />
+                </Route>
+              </Switch>
             </Content>
           </Layout>
         </Layout>
         <Footer>Footer time!</Footer>
       </Layout>
-      {/* <Button type="primary">Ant Button!!</Button> */}
-    </>
+    </Router>
   );
 }
