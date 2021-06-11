@@ -9,7 +9,8 @@ try {
                 extensionMode: CONST.EXTN_MODE.FILTER,
                 listType: CONST.LIST_TYPE.BLACK_LIST,
                 list: CONST.LISTS.DEFAULT_BLACK,
-                fullLists: []
+                fullLists: [],
+                firstOptionsConfig: true
             }
         }, () => { });
         chrome.storage.sync.set({

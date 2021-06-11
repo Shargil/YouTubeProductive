@@ -3,7 +3,7 @@ import { Avatar, Input, List, message, Tooltip } from "antd";
 import { channel } from "../../../interfaces/ChannelsList";
 import { PlusOutlined } from "@ant-design/icons";
 import ChannelURLWarning from "./ChannelURLWarning";
-import { numberToDisplayFormatter } from "../../../sharedFunctions/numberToDisplayFormatter";
+import { numberToDisplayFormatter } from "../../../shared/numberToDisplayFormatter";
 
 export default function AddChannelsFormItem({
   value = {},

@@ -1,9 +1,22 @@
 import React, { useEffect } from "react";
-import { Row, Col, Typography, Form, Button, Radio, message, Spin } from "antd";
+import {
+  Row,
+  Col,
+  Typography,
+  Form,
+  Button,
+  Radio,
+  message,
+  Spin,
+  Tooltip,
+} from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import "./MyYouTube.scss";
 import { User } from "../../interfaces/User";
 import { LIST_TYPE } from "../../constantsDemo";
 import CollectionOfChannelsLists from "./CollectionOfChannelsLists/CollectionOfChannelsLists";
 import { channelsList } from "../../interfaces/ChannelsList";
+import { NavigateToButton } from "../../shared/NavigateToButton/NavigateToButton";
 
 const { Title } = Typography;
 
@@ -14,11 +27,12 @@ interface FormValues {
   };
 }
 
-export default function MyYouTube(props): JSX.Element {
+export default function MyYouTube({ firstOptionsConfig }): JSX.Element {
   const [form] = Form.useForm();
 
   // ----- State -----
   const [isSaveDisabled, setIsSaveDisabled] = React.useState(true);
+  const [isNextDisabled, setIsNextDisabled] = React.useState(true);
   const [initialValues, setInitialValues] = React.useState<FormValues>(null);
 
   // ----- Hooks -----
@@ -32,7 +46,7 @@ export default function MyYouTube(props): JSX.Element {
         },
       });
     });
-  });
+  }, []);
 
   // ----- Extra Functions -----
   const createPerformanceList: any = (channelsLists) => {
@@ -45,6 +59,9 @@ export default function MyYouTube(props): JSX.Element {
       }
     }
     return newPerformanceList;
+  };
+  const areThereChangesToSave = () => {
+    return !isSaveDisabled;
   };
 
   // ----- On Events -----
@@ -67,11 +84,12 @@ export default function MyYouTube(props): JSX.Element {
 
   const onValuesChange = (changedValues: FormValues, allValues: FormValues) => {
     setIsSaveDisabled(false);
+    setIsNextDisabled(false);
   };
 
   return (
     <>
-      <Row style={{ textAlign: "center" }}>
+      {/* <Row style={{ textAlign: "center" }}>
         <Col span={24}>
           <Title level={3}>You deserve YouTube that grows you.</Title>
         </Col>
@@ -79,6 +97,30 @@ export default function MyYouTube(props): JSX.Element {
       <Row style={{ textAlign: "center", marginBottom: "2em" }}>
         <Col span={24}>
           <Title level={3}>That doesn&apos;t suck away your time.</Title>
+        </Col>
+      </Row> */}
+      <Row>
+        <Col span={24} className="title">
+          {/* <Title level={3}>
+            Choose the categories you want or don't want to watch
+          </Title> */}
+          <Title level={3}>
+            Decide what type of channels you want or don't want to watch!
+          </Title>
+          <Title level={5}>
+            YouTube amazing algorithms suck away your time with addicting trashy
+            videos. You deserve YouTube that grows you. Choose your catagories.
+          </Title>
+          {/* <Title level={5}>To Make the most of your time on YouTube</Title>
+          <Title level={5}>
+            You deserve YouTube that grows you. That doesn't suck away your
+            time.
+          </Title> */}
+          <Tooltip title="prompt text">
+            <span>
+              how MyYouTube works <QuestionCircleOutlined />
+            </span>
+          </Tooltip>
         </Col>
       </Row>
 
@@ -126,7 +168,21 @@ export default function MyYouTube(props): JSX.Element {
       <Row>
         <Col span={2}></Col>
         <Col span={20}></Col>
-        <Col span={2}></Col>
+        <Col span={2}>
+          {firstOptionsConfig ? (
+            <NavigateToButton
+              text="Next"
+              clickOnElementId="FocusLevelMenuItem"
+              path="/FocusLevel"
+              disabled={isNextDisabled}
+              onClick={() => {
+                if (areThereChangesToSave()) {
+                  form.submit();
+                }
+              }}
+            />
+          ) : null}
+        </Col>
       </Row>
     </>
   );
