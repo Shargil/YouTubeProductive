@@ -6,7 +6,7 @@ import {
   CaretUpOutlined,
   CaretDownOutlined,
   EditOutlined,
-  MinusCircleOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 
 const { Title } = Typography;
@@ -61,7 +61,7 @@ export default function ChannelsListCard({
           </Space>
         </Col>
         <Col span={4}>
-          <MinusCircleOutlined
+          <DeleteOutlined
             className="delete-button"
             onClick={() => remove(channelsList.id)}
           />

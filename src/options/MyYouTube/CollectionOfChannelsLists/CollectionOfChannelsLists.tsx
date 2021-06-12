@@ -27,7 +27,7 @@ export default function CollectionOfChannelsLists({
   };
 
   const fetchChannelsList = (id: number): channelsList => {
-    return fakeServerFetchingChannelsList(2);
+    return fakeServerFetchingChannelsList(id);
   };
 
   const checkIsSelected = (id) => {
