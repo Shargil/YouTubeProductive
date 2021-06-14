@@ -7,7 +7,11 @@ export interface User {
     list: ListItems;
     fullLists: Array<channelsList>;
     firstOptionsConfig: Boolean;
-    focusLevel: FOCUS_LEVEL;
+    focus: {
+        focusLevel: FOCUS_LEVEL;
+        sessionStartTime: string;
+        blockStartTime: string;
+    }
 }
 
 export interface ListItems {   

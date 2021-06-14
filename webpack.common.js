@@ -6,6 +6,7 @@ module.exports = {
     options: path.join(__dirname, "src/options/index.tsx"),
     // constants: path.join(__dirname, "src/constants.tsx"),
     smartTimeLimit: path.join(__dirname, "src/contentScripts/smartTimeLimit/smartTimeLimit.tsx"),
+    deepFocus: path.join(__dirname, "src/contentScripts/deepFocus/deepFocus.tsx"),
   },
   output: {
     filename: "[name].js",

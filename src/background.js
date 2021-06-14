@@ -10,7 +10,12 @@ try {
                 listType: CONST.LIST_TYPE.BLACK_LIST,
                 list: CONST.LISTS.DEFAULT_BLACK,
                 fullLists: [],
-                firstOptionsConfig: true
+                firstOptionsConfig: true,
+                focus: {
+                    focusLevel: "regular",
+                    sessionStartTime: null,
+                    blockStartTime: null,
+                }
             }
         }, () => { });
         chrome.storage.sync.set({
@@ -19,14 +24,14 @@ try {
             }
         }, () => { });
 
-        // ----- Storage Local! -----
-        chrome.storage.local.set({
-            smartTimeLimit: {
-                sessionTimeInM: null,
-                secondsUsed: {},
-                blockUntil: null,
-            }
-        }, () => { })
+        // // ----- Storage Local! -----
+        // chrome.storage.local.set({
+        //     smartTimeLimit: {
+        //         sessionTimeInM: null,
+        //         secondsUsed: {},
+        //         blockUntil: null,
+        //     }
+        // }, () => { })
 
         chrome.runtime.openOptionsPage(() => { });
     });
@@ -39,7 +44,12 @@ try {
                 function onComplete() {
                     console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
                     runScript("./contentScripts/sharedFunctions.js", details.tabId);
-                    runScript("./smartTimeLimit.js", details.tabId);
+
+                    chrome.storage.sync.get("user", (res) => {
+                        if (res.user.focus.focusLevel === "deepFocus")
+                            runScript("./deepFocus.js", details.tabId);
+                    })
+
                     runExtensionModeScript(details.tabId);
                     chrome.webNavigation.onCompleted.removeListener(onComplete);
                 });
@@ -93,11 +103,11 @@ try {
                     case "getMyURL":
                         sendResponse({ url: sender.tab.url });
                         break;
-                    // case "reloadAllYouTubeTabs":
-                    //     // Should I reload all youtube tabs or just the one open?
+                    // case "reloadAllOtherYouTubeTabs":
                     //     chrome.tabs.query({ url: "*://www.youtube.com/*" }, (tabs) => {
                     //         for (let tab of tabs) {
-                    //             chrome.tabs.reload(tab.id, () => { });
+                    //             if (tab.id != sender.tab.id)
+                    //                 chrome.tabs.reload(tab.id, () => { });
                     //         }
                     //     });
                     //     break;
@@ -117,6 +127,19 @@ try {
                     // case "secondsUsed":
                     //     console.log("Tab ID: " + sender.tab.id + ", Current Second: " + request.data.currentSecondUsed)
                     //     break;
+                    case "blockAllOtherYouTubeTabs":
+                        chrome.tabs.query({ url: "*://www.youtube.com/*" }, (tabs) => {
+                            for (let tab of tabs) {
+                                if (tab.id != sender.tab.id) {
+                                    console.log("True ", tab.id);
+                                    chrome.tabs.sendMessage(tab.id, { backgroundFuncs: "blockUI" }, (res) => {
+                                    });
+                                } else {
+                                    console.log("False ", tab.id);
+                                }
+                            }
+                        });
+                        break;
                 }
             }
             return true; // https://stackoverflow.com/questions/54126343/how-to-fix-unchecked-runtime-lasterror-the-message-port-closed-before-a-respon second answer

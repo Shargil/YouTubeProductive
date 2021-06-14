@@ -11,4 +11,8 @@ export enum FOCUS_LEVEL {
   Regular = "regular",
   DeepFocus= "deepFocus", 
 }
+export enum EXTN_MODE {
+  SearchOnly= "searchOnly",
+  Filter= "filter",
+}
 

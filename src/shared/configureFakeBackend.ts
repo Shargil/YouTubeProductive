@@ -1,3 +1,5 @@
+// https://jasonwatmore.com/post/2020/03/10/react-fetch-fake-backend-example-for-backendless-development
+
 // array in local storage for registered users
 let allChannelsListsNames = [];
 for (let i = 0; i < 23; i++) {
