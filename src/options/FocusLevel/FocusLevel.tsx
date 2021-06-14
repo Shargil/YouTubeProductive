@@ -2,7 +2,7 @@ import { Button, message, Radio } from "antd";
 import Title from "antd/lib/typography/Title";
 import React from "react";
 import { User } from "../../interfaces/User";
-import { FOCUS_LEVEL } from "../../constantsDemo";
+import { EXTN_MODE, FOCUS_LEVEL } from "../../constantsDemo";
 
 export function FocusLevel({ firstOptionsConfig }): JSX.Element {
   // ----- State -----
@@ -18,7 +18,7 @@ export function FocusLevel({ firstOptionsConfig }): JSX.Element {
   const onFinish = () => {
     chrome.storage.sync.get("user", (res) => {
       let updatedUser: User = res.user;
-      updatedUser.focusLevel = value;
+      updatedUser.focus.focusLevel = value;
       updatedUser.firstOptionsConfig = false;
       chrome.storage.sync.set({ user: updatedUser }, () => {
         message.success(
@@ -40,7 +40,9 @@ export function FocusLevel({ firstOptionsConfig }): JSX.Element {
   const onSave = () => {
     chrome.storage.sync.get("user", (res) => {
       let updatedUser: User = res.user;
-      updatedUser.focusLevel = value;
+      updatedUser.focus.focusLevel = value;
+      if (value === FOCUS_LEVEL.DeepFocus)
+        updatedUser.extensionMode = EXTN_MODE.SearchOnly;
       chrome.storage.sync.set({ user: updatedUser }, () => {
         message.success("Your new options are saved!");
         setIsButtonDisabled(true);
