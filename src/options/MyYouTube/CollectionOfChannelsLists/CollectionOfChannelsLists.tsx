@@ -47,6 +47,8 @@ export default function CollectionOfChannelsLists({
       triggerChange({
         collection: newCollection,
       });
+
+      setSelectedItem(currChannelsList);
     }
   };
 
