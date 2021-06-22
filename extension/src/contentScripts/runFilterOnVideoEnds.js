@@ -1,0 +1,3 @@
+setTimeout(() => {
+    filterEndOfVideoVideos();
+}, 0);
