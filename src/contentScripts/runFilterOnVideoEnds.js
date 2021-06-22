@@ -1,3 +1,0 @@
-setTimeout(() => {
-    filterEndOfVideoVideos();
-}, 0);
