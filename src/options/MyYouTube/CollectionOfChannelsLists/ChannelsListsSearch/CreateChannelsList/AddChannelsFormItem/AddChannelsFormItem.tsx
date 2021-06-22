@@ -1,9 +1,9 @@
 import React from "react";
 import { Avatar, Input, List, message, Tooltip } from "antd";
-import { channel } from "../../../interfaces/ChannelsList";
+import { channel } from "../../../../../../interfaces/ChannelsList";
 import { PlusOutlined } from "@ant-design/icons";
 import ChannelURLWarning from "./ChannelURLWarning";
-import { numberToDisplayFormatter } from "../../../shared/numberToDisplayFormatter";
+import { numberToDisplayFormatter } from "../../../../../../shared/numberToDisplayFormatter";
 
 export default function AddChannelsFormItem({
   value = {},
@@ -48,6 +48,7 @@ export default function AddChannelsFormItem({
                 subs: parsedJson.items[0].statistics.subscriberCount,
               };
               addChannel(newChannel);
+              setUrlInput("");
             } catch (e) {
               console.error("Couldn't create or add new chanel", e);
             }

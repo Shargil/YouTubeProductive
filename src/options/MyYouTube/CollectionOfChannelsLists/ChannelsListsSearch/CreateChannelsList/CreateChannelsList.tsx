@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Form, Input, message, Typography } from "antd";
 
 import "./CreateChannelsList.scss";
-import { channel, channelsList } from "../../interfaces/ChannelsList";
+import { channel, channelsList } from "../../../../../interfaces/ChannelsList";
 import AddChannelsFormItem from "./AddChannelsFormItem/AddChannelsFormItem";
 
 const { Title } = Typography;
@@ -13,15 +13,16 @@ interface FormValues {
   addChannelsFormItem: { channels: Array<channel> };
 }
 
-export default function CreateChannelsList(props): JSX.Element {
+export default function CreateChannelsList(): JSX.Element {
   // ----- State -----
+  const [isCreateDisabled, setIsCreateDisabled] = useState(true);
 
   // ----- Hooks -----
-  React.useEffect(() => {}, []);
 
   // ----- Extra Functions -----
 
   // ----- On  Events -----
+
   const onCreate = (values: FormValues) => {
     const newChannelsList: channelsList = {
       id: new Date().getTime(),
@@ -32,9 +33,14 @@ export default function CreateChannelsList(props): JSX.Element {
       list: values.addChannelsFormItem.channels,
     };
     console.log("Success:", newChannelsList);
+
+    message.success(
+      "Created new Channels List! You and others can choose it right now. (maybe a refresh is needed)"
+    );
+    setIsCreateDisabled(true);
     // I want to save it to the server // create fake server in storage
     // show them success message, and clean the form
-    // 
+    //
   };
 
   const onCreateFailed = (errorInfo) => {
@@ -42,7 +48,7 @@ export default function CreateChannelsList(props): JSX.Element {
   };
 
   const onValuesChange = (changedValues: FormValues, allValues: FormValues) => {
-    console.log(allValues);
+    setIsCreateDisabled(false);
   };
 
   const layout = {
@@ -62,8 +68,17 @@ export default function CreateChannelsList(props): JSX.Element {
   };
   return (
     <>
-      <Title level={3}>Create A New Channels List For The Community</Title>
-      {/* <Title level={5}>For yourself and the cumiinty</Title> */}
+      {/* <Title level={5} className={"noMarginTop"}>
+        Create a new list of channels. The community and yourself will be able
+        to use it.
+      </Title> */}
+      <p>
+        It can be around a subject like: Calisthenics, Best Makers or Education.
+        The community and yourself will be able to use it.
+        <br />
+        Comprehensive and usable list will probably have high rank and more
+        users.
+      </p>
       <Form
         {...layout}
         name="CreateChannelsList"
@@ -109,7 +124,7 @@ export default function CreateChannelsList(props): JSX.Element {
         </Form.Item>
 
         <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" disabled={isCreateDisabled}>
             Create
           </Button>
         </Form.Item>

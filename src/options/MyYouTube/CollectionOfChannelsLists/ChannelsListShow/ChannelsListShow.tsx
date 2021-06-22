@@ -2,10 +2,10 @@ import React from "react";
 import { Avatar, List } from "antd";
 import { channel } from "../../../../interfaces/ChannelsList";
 
-interface t {
+interface types {
   list: Array<channel>;
 }
-export default function ChannelsListShow({ list }: t): JSX.Element {
+export default function ChannelsListShow({ list }: types): JSX.Element {
   return (
     <List
       itemLayout="horizontal"

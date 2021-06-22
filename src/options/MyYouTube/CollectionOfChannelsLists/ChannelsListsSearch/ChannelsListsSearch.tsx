@@ -1,5 +1,7 @@
-import React from "react";
-import { AutoComplete, Input, message, Spin } from "antd";
+import React, { useEffect, useState } from "react";
+import { AutoComplete, Input, message, Modal, Select, Spin } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import CreateChannelsList from "./CreateChannelsList/CreateChannelsList";
 
 const mapOptions = (channelsListsPartial) => {
   return channelsListsPartial.map((item) => {
@@ -10,11 +12,11 @@ const mapOptions = (channelsListsPartial) => {
 export default function ChannelsListsSearch({
   onSelectAutoComplete,
 }): JSX.Element {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [isError, setIsError] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [options, setOptions] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const requestOptions = {
       method: "GET",
       headers: { Authorization: "Bearer fake-jwt-token" },
@@ -34,9 +36,25 @@ export default function ChannelsListsSearch({
       });
   }, []);
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = (e) => {
+    setIsModalVisible(true);
+    e.preventDefault();
+  };
+
+  const onOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const onCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const onSelect = (channelsListID) => {
+    debugger;
     onSelectAutoComplete(parseInt(channelsListID));
   };
+
   return (
     <>
       <AutoComplete
@@ -46,20 +64,31 @@ export default function ChannelsListsSearch({
           // Case insensitive
           option.label.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
         }
-      >
-        <>
+        children={
           <Input
             placeholder="Channels Category like Science or Calisthenics"
-            addonAfter={
+            addonBefore={
               isLoading ? (
                 <Spin size="small" />
               ) : isError ? (
                 <div>error!</div>
               ) : null
             }
+            addonAfter={<PlusOutlined onClick={showModal} />}
           />
-        </>
-      </AutoComplete>
+        }
+      ></AutoComplete>
+      <Modal
+        title="Create A New Channels List"
+        visible={isModalVisible}
+        onOk={onOk}
+        onCancel={onCancel}
+        maskClosable={false}
+        width={"60%"}
+        footer={null}
+      >
+        <CreateChannelsList />
+      </Modal>
     </>
   );
 }

@@ -11,7 +11,7 @@ import MyYouTube from "./MyYouTube/MyYouTube";
 import { MemoryRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import "./options.scss";
-import CreateChannelsList from "./CreateChannelsList/CreateChannelsList";
+// import CreateChannelsList from "./CreateChannelsList/CreateChannelsList";
 import { Home } from "./Home/Home";
 import { FocusLevel } from "./FocusLevel/FocusLevel";
 
@@ -58,14 +58,14 @@ export default function Options() {
                 Focus Level
                 <Link to="/FocusLevel" />
               </Menu.Item>
-              <Menu.Item
+              {/* <Menu.Item
                 id="CreateChannelsListMenuItem"
                 key="4"
                 icon={<UnorderedListOutlined />}
               >
                 Create Channels List
                 <Link to="/CreateChannelsList" />
-              </Menu.Item>
+              </Menu.Item> */}
             </Menu>
           </Sider>
           <Layout style={{ padding: "0 24px 24px" }}>
@@ -85,9 +85,9 @@ export default function Options() {
                 <Route path="/FocusLevel">
                   <FocusLevel firstOptionsConfig={firstOptionsConfig} />
                 </Route>
-                <Route path="/CreateChannelsList">
+                {/* <Route path="/CreateChannelsList">
                   <CreateChannelsList />
-                </Route>
+                </Route> */}
                 <Route path="/">
                   <Home firstOptionsConfig={firstOptionsConfig} />
                 </Route>
