@@ -76,11 +76,21 @@ export function DeepFocus({}): JSX.Element {
       "<div>YouTube is blocked for " +
       blockDurationMinutes +
       " minuets, so you can ease out of the need to watch.</div>" +
-      "<div>After, YouTube Productive will be set to SearchOnly so you can continue with no distractions.</div>" +
+      "<div>After, you can refresh the page. YouTube Productive will be set to SearchOnly so you can continue with no distractions.</div>" +
       "<div>Stopping watching YouTube is really f*cking annoying. Sometimes, it's helps me to think about how much hours I could continue and waste.</div>" +
       "<div>Question... if it was your last day on earth what would you do right now?</div>" +
       "<div>P.S Redesign Me Please!</div>" +
       "</div>";
+    muteAudio();
+  };
+
+  const muteAudio = () => {
+    console.log("mute all audios...");
+    const audios = document.getElementsByTagName("audio");
+    for (let i = 0; i < audios.length; i++) {
+      console.log(audios[i]);
+      audios[i].muted = true;
+    }
   };
 
   const changeToSearchOnly = () => {
@@ -206,4 +216,4 @@ ReactDOM.render(<DeepFocus />, document.getElementById("deepFocusContainer"));
 // - Start watching in one tab and finish in another one
 // - open many tabs, watch in one of them, stopping, come back tomorrow (should it auto restart to search only?)
 // - open many tabs, watch in one of them, changing to searchOnly, what happens in the different tabs? (Maybe the block function should happen in all? maybe reload in all)
-// - Start watch in oen tab, stop watching, come back to another one in two hours
+// - Start watch in one tab, stop watching, come back to another one in two hours
