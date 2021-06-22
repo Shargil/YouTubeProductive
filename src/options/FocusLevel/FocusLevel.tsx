@@ -23,7 +23,7 @@ export function FocusLevel({ firstOptionsConfig }): JSX.Element {
       chrome.storage.sync.set({ user: updatedUser }, () => {
         message.success(
           <>
-            <div>Finished first options setup successfully!</div>
+            <div>First Options Setup Successful!</div>
             <div>Go enjoy YouTube that grows you,</div>
             <div>
               You can come back here, to options, in any time and change
@@ -54,7 +54,8 @@ export function FocusLevel({ firstOptionsConfig }): JSX.Element {
     <>
       <Title level={3}>Focus Level</Title>
       <Title level={5}>
-        Decide how much help you want to not let YouTube become a distraction
+        Decide how much help you want with staying in focus and not letting
+        YouTube become a distraction
       </Title>
       <Radio.Group onChange={onChange} value={value}>
         <Radio value={FOCUS_LEVEL.Regular}>
@@ -75,7 +76,7 @@ export function FocusLevel({ firstOptionsConfig }): JSX.Element {
               <strong>decide how much time</strong> you want to spend in the
               upcoming session! After the time is up, you will be blocked from
               youtube for couple of minutes and then back to searchOnly so you
-              be able to work with youtube if needed.
+              be able to use youtube, if you need it to work.
             </li>
           </ul>
         </Radio>
