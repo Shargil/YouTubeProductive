@@ -6,8 +6,8 @@ const shared = require('../shared');
 // Get all
 router.get('/', async (req, res) => {
     try {
-        const felids = shared.getReqQueryFelids(req)
-        const channelsList = await ChannelsList.find({}, felids)
+        const fields = shared.getReqQueryFields(req)
+        const channelsList = await ChannelsList.find({}, fields)
         res.json(channelsList)
     } catch (err) {
         res.status(500).json({ message: err.message })
