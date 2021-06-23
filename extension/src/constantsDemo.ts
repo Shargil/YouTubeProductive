@@ -16,3 +16,5 @@ export enum EXTN_MODE {
   Filter= "filter",
 }
 
+export const ServerURL = "http://127.0.0.1:3000";
+

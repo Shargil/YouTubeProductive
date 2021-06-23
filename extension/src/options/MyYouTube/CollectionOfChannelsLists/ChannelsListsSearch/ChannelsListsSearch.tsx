@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { AutoComplete, Input, message, Modal, Select, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import CreateChannelsList from "./CreateChannelsList/CreateChannelsList";
+import { ServerURL } from "../../../../constantsDemo";
 
 const mapOptions = (channelsListsPartial) => {
   return channelsListsPartial.map((item) => {
-    return { value: item.id.toString(), label: item.name };
+    return { value: item._id.toString(), label: item.name };
   });
 };
 
@@ -17,12 +18,7 @@ export default function ChannelsListsSearch({
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    const requestOptions = {
-      method: "GET",
-      headers: { Authorization: "Bearer fake-jwt-token" },
-    };
-
-    fetch("./channelsJustNamesAndIDs", requestOptions)
+    fetch(ServerURL + "/channelsList?fields=name", { method: "GET" })
       .then((res) => {
         res.text().then((resText) => {
           setOptions(mapOptions(JSON.parse(resText)));
@@ -32,7 +28,7 @@ export default function ChannelsListsSearch({
       .catch((err) => {
         setIsLoading(false);
         setIsError(true);
-        message.error("Couldn't get Channels Lists :(");
+        message.error("Couldn't get Channels Lists");
       });
   }, []);
 
@@ -51,8 +47,7 @@ export default function ChannelsListsSearch({
   };
 
   const onSelect = (channelsListID) => {
-    debugger;
-    onSelectAutoComplete(parseInt(channelsListID));
+    onSelectAutoComplete(channelsListID);
   };
 
   return (
@@ -87,7 +82,7 @@ export default function ChannelsListsSearch({
         width={"60%"}
         footer={null}
       >
-        <CreateChannelsList />
+        <CreateChannelsList closeModal={() => setIsModalVisible(false)} />
       </Modal>
     </>
   );

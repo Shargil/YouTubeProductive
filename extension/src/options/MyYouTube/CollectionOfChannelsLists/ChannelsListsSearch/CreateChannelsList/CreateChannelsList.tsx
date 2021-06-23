@@ -5,6 +5,7 @@ import { Button, Form, Input, message, Typography } from "antd";
 import "./CreateChannelsList.scss";
 import { channel, channelsList } from "../../../../../interfaces/ChannelsList";
 import AddChannelsFormItem from "./AddChannelsFormItem/AddChannelsFormItem";
+import { ServerURL } from "../../../../../constantsDemo";
 
 const { Title } = Typography;
 
@@ -13,7 +14,7 @@ interface FormValues {
   addChannelsFormItem: { channels: Array<channel> };
 }
 
-export default function CreateChannelsList(): JSX.Element {
+export default function CreateChannelsList({ closeModal }): JSX.Element {
   // ----- State -----
   const [isCreateDisabled, setIsCreateDisabled] = useState(true);
 
@@ -25,22 +26,52 @@ export default function CreateChannelsList(): JSX.Element {
 
   const onCreate = (values: FormValues) => {
     const newChannelsList: channelsList = {
-      id: new Date().getTime(),
+      id: undefined,
       name: values.title,
       author: "It's me",
-      upVotes: parseInt(new Date().getTime().toString().slice(-2)),
-      numOfUsers: parseInt(new Date().getTime().toString().slice(-3)),
+      upVotes: 0,
+      numOfUsers: 0,
       list: values.addChannelsFormItem.channels,
     };
-    console.log("Success:", newChannelsList);
 
-    message.success(
-      "Created new Channels List! You and others can choose it right now. (maybe a refresh is needed)"
-    );
-    setIsCreateDisabled(true);
-    // I want to save it to the server // create fake server in storage
-    // show them success message, and clean the form
-    //
+    // (async () => {
+    //   const res = await fetch(ServerURL + "/channelsList", {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(newChannelsList),
+    //   });
+
+    //   const content = await res.json();
+
+    //   message.success(
+    //     "Created new Channels List! You and others can choose it right now. (maybe a refresh is needed)"
+    //   );
+    //   setIsCreateDisabled(true);
+    // })();
+
+    fetch(ServerURL + "/channelsList", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newChannelsList),
+    })
+      .then((res) => {
+        res.text().then((resText) => {
+          message.success(
+            "Created new Channels List! You and others can choose it right now. (maybe a refresh is needed)"
+          );
+          setIsCreateDisabled(true);
+          setTimeout(() => closeModal(), 2000);
+        });
+      })
+      .catch((err) => {
+        message.error("Couldn't create Channels List");
+      });
   };
 
   const onCreateFailed = (errorInfo) => {

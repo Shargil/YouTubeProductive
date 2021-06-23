@@ -1,5 +1,5 @@
 export interface channelsList {
-  id: number;
+  id?: string;
   name: string;
   author: string;
   upVotes: number;
