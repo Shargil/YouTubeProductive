@@ -6,3 +6,4 @@ extension/dist/
 server/.history/
 server/.vscode/
 server/node_modules/
+server/src/.env

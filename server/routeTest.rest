@@ -1,0 +1,33 @@
+GET http://localhost:3000/channelsList
+
+###
+
+GET http://localhost:3000/channelsList/60d240ea0825ab09e4f5c329
+
+###
+
+POST http://localhost:3000/channelsList
+Content-Type: application/json
+
+{
+    "name": "UX/UI 1",
+    "author": "Shargil69",
+    "upVotes": "21",
+    "numOfUsers": "1205",
+    "list": []
+}
+  
+###
+
+DELETE http://localhost:3000/channelsList/60d240ea0825ab09e4f5c329
+
+
+### 
+PATCH http://localhost:3000/channelsList/60d244b5049a054ac814906b
+Content-Type: application/json
+
+{
+    "name": "UX/UI 1",
+    "author": "Shargil699999",
+    "list": []
+}
