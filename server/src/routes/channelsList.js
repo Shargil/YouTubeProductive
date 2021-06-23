@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const ChannelsList = require('../models/channelsList')
+const shared = require('../shared');
 
 // Get all
 router.get('/', async (req, res) => {
     try {
-        const channelsList = await ChannelsList.find()
+        const felids = shared.getReqQueryFelids(req)
+        const channelsList = await ChannelsList.find({}, felids)
         res.json(channelsList)
     } catch (err) {
         res.status(500).json({ message: err.message })
