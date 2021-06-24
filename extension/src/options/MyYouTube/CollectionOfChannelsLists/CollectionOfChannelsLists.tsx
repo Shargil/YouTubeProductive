@@ -5,7 +5,7 @@ import ChannelsListsSearch from "./ChannelsListsSearch/ChannelsListsSearch";
 import ChannelsListCard from "./ChannelsListCard/ChannelsListCard";
 import ChannelsListShow from "./ChannelsListShow/ChannelsListShow";
 import { channelsList } from "../../../interfaces/ChannelsList";
-import { ServerURL } from "../../../constantsDemo";
+import { fetchS } from "../../../shared/fetchS";
 
 export default function CollectionOfChannelsLists({
   value = {},
@@ -32,28 +32,24 @@ export default function CollectionOfChannelsLists({
   };
 
   // ----- On Events -----
-  const onSelectAutoComplete = (id) => {
+  const onSelectAutoComplete = async (id) => {
     const isSelectedAllReady = collection.some((el) => el.id === id);
 
     if (!isSelectedAllReady) {
-      fetch(ServerURL + "/channelsList/" + id, { method: "GET" })
-        .then((res) => {
-          res.text().then((resText) => {
-            const currChannelsList = JSON.parse(resText);
-            const newCollection = collection.concat(currChannelsList);
+      const data = await fetchS("GET", "/channelsList/" + id, null, () =>
+        message.error("Couldn't get Channels List")
+      );
 
-            setCollection(newCollection);
+      const currChannelsList = data;
+      const newCollection = collection.concat(currChannelsList);
 
-            triggerChange({
-              collection: newCollection,
-            });
+      setCollection(newCollection);
 
-            setSelectedItem(currChannelsList);
-          });
-        })
-        .catch((err) => {
-          message.error("Couldn't get Channels List");
-        });
+      triggerChange({
+        collection: newCollection,
+      });
+
+      setSelectedItem(currChannelsList);
     }
   };
 

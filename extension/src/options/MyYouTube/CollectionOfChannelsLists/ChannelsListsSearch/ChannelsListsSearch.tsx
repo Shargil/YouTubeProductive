@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AutoComplete, Input, message, Modal, Select, Spin } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import CreateChannelsList from "./CreateChannelsList/CreateChannelsList";
-import { ServerURL } from "../../../../constantsDemo";
+import { fetchS } from "../../../../shared/fetchS";
 
 const mapOptions = (channelsListsPartial) => {
   return channelsListsPartial.map((item) => {
@@ -18,18 +18,18 @@ export default function ChannelsListsSearch({
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    fetch(ServerURL + "/channelsList?fields=name", { method: "GET" })
-      .then((res) => {
-        res.text().then((resText) => {
-          setOptions(mapOptions(JSON.parse(resText)));
-          setIsLoading(false);
-        });
-      })
-      .catch((err) => {
+
+    async function fetchData() {
+      const data = await fetchS("GET", "/channelsList", null, () => {
         setIsLoading(false);
         setIsError(true);
         message.error("Couldn't get Channels Lists");
       });
+
+      setOptions(mapOptions(data));
+      setIsLoading(false);
+    }
+    fetchData();
   }, []);
 
   const [isModalVisible, setIsModalVisible] = useState(false);

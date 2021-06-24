@@ -5,7 +5,7 @@ import { Button, Form, Input, message, Typography } from "antd";
 import "./CreateChannelsList.scss";
 import { channel, channelsList } from "../../../../../interfaces/ChannelsList";
 import AddChannelsFormItem from "./AddChannelsFormItem/AddChannelsFormItem";
-import { ServerURL } from "../../../../../constantsDemo";
+import { fetchS } from "../../../../../shared/fetchS";
 
 const { Title } = Typography;
 
@@ -24,7 +24,7 @@ export default function CreateChannelsList({ closeModal }): JSX.Element {
 
   // ----- On  Events -----
 
-  const onCreate = (values: FormValues) => {
+  const onCreate = async (values: FormValues) => {
     const newChannelsList: channelsList = {
       id: undefined,
       name: values.title,
@@ -34,44 +34,15 @@ export default function CreateChannelsList({ closeModal }): JSX.Element {
       list: values.addChannelsFormItem.channels,
     };
 
-    // (async () => {
-    //   const res = await fetch(ServerURL + "/channelsList", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(newChannelsList),
-    //   });
+    const data = await fetchS("POST", "/channelsList", newChannelsList, () =>
+      message.error("Couldn't create Channels List")
+    );
 
-    //   const content = await res.json();
-
-    //   message.success(
-    //     "Created new Channels List! You and others can choose it right now. (maybe a refresh is needed)"
-    //   );
-    //   setIsCreateDisabled(true);
-    // })();
-
-    fetch(ServerURL + "/channelsList", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newChannelsList),
-    })
-      .then((res) => {
-        res.text().then((resText) => {
-          message.success(
-            "Created new Channels List! You and others can choose it right now. (maybe a refresh is needed)"
-          );
-          setIsCreateDisabled(true);
-          setTimeout(() => closeModal(), 2000);
-        });
-      })
-      .catch((err) => {
-        message.error("Couldn't create Channels List");
-      });
+    const msg =
+      "Created new Channels List! You and others can choose it right now. (maybe a refresh is needed)";
+    message.success(msg);
+    setIsCreateDisabled(true);
+    setTimeout(() => closeModal(), 2000);
   };
 
   const onCreateFailed = (errorInfo) => {
