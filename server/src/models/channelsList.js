@@ -23,4 +23,9 @@ const channelsListSchema = new mongoose.Schema({
     },
 });
 
+// Returns also "id" field, not just "_id"
+channelsListSchema.set('toJSON', {
+    virtuals: true
+});
+
 module.exports = mongoose.model('ChannelsList', channelsListSchema)

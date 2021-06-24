@@ -1,7 +1,6 @@
 module.exports = {
     getReqQueryFields: function (req) {
         if (req.query.fields === undefined) {
-            console.log("req.query.fields is undefined")
             return;
         }
         const fieldsToRetrieve = req.query.fields.replace(",", " ")
