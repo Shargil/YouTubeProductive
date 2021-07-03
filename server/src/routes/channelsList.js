@@ -14,6 +14,15 @@ router.get('/', async (req, res) => {
     }
 })
 
+// delete me
+router.get('/deleteme', async (req, res) => {
+    try {
+        res.json("hey!")
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
 // Get one
 router.get('/:id', getChannelsList, (req, res) => {
     res.json(res.channelsList)
