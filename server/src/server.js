@@ -11,6 +11,8 @@ db.once('open', () => { console.log('Connected to DataBase') })
 
 // Setup server
 const express = require('express')
+const helmet = require('helmet');
+
 const app = express()
 
 // Middleware
@@ -19,7 +21,7 @@ app.use(express.json())
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
-// app.use(helmet());
+app.use(helmet());
 // app.use(compression()); // Compress all routes
 
 // Routes
