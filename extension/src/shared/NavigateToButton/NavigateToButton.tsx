@@ -21,6 +21,7 @@ export function NavigateToButton({
 
   return (
     <Button
+      type="primary"
       disabled={disabled}
       onClick={() => {
         clickOnElement(clickOnElementId);

@@ -1,5 +1,5 @@
 import React from "react";
-import UsersIcon from "./UsersIcon";
+import UsersIcon from "../../../../shared/customAnatIcons/UsersIcon";
 import "./ChannelsListCard.scss";
 import { Space, Typography, Row, Col, Divider } from "antd";
 import {

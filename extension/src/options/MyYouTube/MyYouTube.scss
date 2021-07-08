@@ -1,3 +1,27 @@
 .title {
     text-align: center;
 }
+
+.space-between-children{
+    display: flex;
+    justify-content: space-between;
+}
+
+.how-it-works {
+    background-color: #F5F5F5;
+    height: 2.5em;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 20px;
+    color: #192646;
+}
+
+.display-flex{
+    display: flex;
+}
+
+.half {
+    flex: 12;
+}

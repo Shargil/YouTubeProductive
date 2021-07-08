@@ -55,17 +55,17 @@ export default function CreateChannelsList({ closeModal }): JSX.Element {
 
   const layout = {
     labelCol: {
-      span: 8,
+      span: 7,
     },
     wrapperCol: {
-      span: 8,
+      span: 10,
     },
   };
 
   const tailLayout = {
     wrapperCol: {
-      offset: 8,
-      span: 8,
+      offset: 7,
+      span: 10,
     },
   };
   return (

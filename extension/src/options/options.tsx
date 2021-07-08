@@ -1,11 +1,13 @@
 import React from "react";
+//  Import the less file (and not the the css) to enable costume styling in webpack.common
+import "antd/dist/antd.less";
 import { Layout, Menu } from "antd";
 import {
   PlayCircleOutlined,
-  UserOutlined,
-  UnorderedListOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
+import OtherOptionsIcon from "../shared/customAnatIcons/OtherOptionsIcon"
+import FocusIcon from "../shared/customAnatIcons/FocusIcon";
 import MyYouTube from "./MyYouTube/MyYouTube";
 
 import { MemoryRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -14,7 +16,7 @@ import "./options.scss";
 // import CreateChannelsList from "./CreateChannelsList/CreateChannelsList";
 import { Home } from "./Home/Home";
 import { FocusLevel } from "./FocusLevel/FocusLevel";
-
+import { OtherOptions } from "./OtherOptions/OtherOptions";
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function Options() {
@@ -29,10 +31,10 @@ export default function Options() {
     <Router>
       <Layout>
         <Header className="header">
-          <div className="logo" />
+          <img src="../assets/LogoSmall.svg" alt="React Logo" width="165" />
         </Header>
         <Layout>
-          <Sider width={200} className="site-layout-background">
+          <Sider width={200} className="my-sider">
             <Menu
               mode="inline"
               defaultSelectedKeys={["1"]}
@@ -53,30 +55,23 @@ export default function Options() {
               <Menu.Item
                 id="FocusLevelMenuItem"
                 key="3"
-                icon={<UserOutlined />}
+                icon={<FocusIcon />}
               >
                 Focus Level
                 <Link to="/FocusLevel" />
               </Menu.Item>
-              {/* <Menu.Item
-                id="CreateChannelsListMenuItem"
+              <Menu.Item
+                id="OtherOptionsMenuItem"
                 key="4"
-                icon={<UnorderedListOutlined />}
+                icon={<OtherOptionsIcon />}
               >
-                Create Channels List
-                <Link to="/CreateChannelsList" />
-              </Menu.Item> */}
+                Other Options
+                <Link to="/OtherOptions" />
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout style={{ padding: "0 24px 24px" }}>
             <Content
-              className="site-layout-background"
-              style={{
-                padding: 24,
-                margin: 0,
-                minHeight: 280,
-                backgroundColor: "white",
-              }}
             >
               <Switch>
                 <Route path="/MyYouTube">
@@ -85,9 +80,9 @@ export default function Options() {
                 <Route path="/FocusLevel">
                   <FocusLevel firstOptionsConfig={firstOptionsConfig} />
                 </Route>
-                {/* <Route path="/CreateChannelsList">
-                  <CreateChannelsList />
-                </Route> */}
+                <Route path="/OtherOptions">
+                  <OtherOptions firstOptionsConfig={firstOptionsConfig} />
+                </Route>
                 <Route path="/">
                   <Home firstOptionsConfig={firstOptionsConfig} />
                 </Route>

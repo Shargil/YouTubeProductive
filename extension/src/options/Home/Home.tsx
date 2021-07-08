@@ -1,7 +1,10 @@
-import { Button } from "antd";
+import { Col, Row } from "antd";
 import Title from "antd/lib/typography/Title";
 import React from "react";
 import { NavigateToButton } from "../../shared/NavigateToButton/NavigateToButton";
+import "./Home.scss"
+
+import { Player } from '@lottiefiles/react-lottie-player';
 
 export function Home({ firstOptionsConfig }): JSX.Element {
   // ----- State -----
@@ -12,50 +15,51 @@ export function Home({ firstOptionsConfig }): JSX.Element {
 
   // ----- On Events -----
   return (
-    <>
-      <Title level={3}>Logo YouTube Productive</Title>
-      <Title level={5}>
-        One liner which state the vision soo well it hurts.
-      </Title>
-      <br></br>
-      <Title level={5}>Hey Savera, new version of YoutubeProductive :)</Title>
-      <ul>
-        <p>New things:</p>
-        <li>
-          - I reimagine the "smart time limit" and created "deep focus". It
-          works differently, so give it a chance.
-        </li>
-        <li>
-          - Now, after installation, there is onboarding/ setup process in the
-          extension options (That you are going through right now!)
-        </li>
-        <br></br>
-        <p>Still working on:</p>
-        <li>
-          - The creation of channels list for MyYouTube Mode doesn't really work
-          (because I don't have a backend server yet), so if you create a list,
-          it wouldn't really effect anything :/ but you can try it and see the
-          UX
-        </li>
-        <li> - Everything need to be designed!</li>
-      </ul>
-      {firstOptionsConfig ? (
-        <>
-          <p>
-            <strong>
-              Choose what type of videos you want ot don't want to see. start
-              now!
-            </strong>
-          </p>
-          <NavigateToButton
-            text="Let's Start!"
-            clickOnElementId="MyYouTubeMenuItem"
-            path="/MyYouTube"
-            disabled={false}
-            onClick={null}
-          />
-        </>
-      ) : null}
-    </>
+    <Row>
+      <Col span={8} offset={7} style={{ minWidth: "500px" }}>
+        <div className="first-section">
+          <Title level={3}>Create the YouTube that grows you.</Title>
+          <Title level={5}>YouTube has amazing algorithms. Using magic, they know what videos going to keep us watching YouTube the longest.</Title>
+          <div className="spacer"></div>
+          <div className="img-container float-in-space">
+            <img src="../../assets/HomeSalyOnPhone.png" alt="Addicted To The Phone" height="200"></img>
+          </div>
+          <Title level={5}>Too many times we find our selfs watching stupid videos at 3 AM or not doing the work that we should.</Title>
+          <Title level={5}>But blocking YouTube all together is not the solution.</Title>
+          <Title level={5}>There is too much stuff to learn, too many interesting quality videos.</Title>
+          <Title level={5}>The time has come.</Title>
+          <Player
+            autoplay
+            loop
+            src="https://assets5.lottiefiles.com/packages/lf20_pfjyrl26.json"
+            style={{ height: '80px', width: '80px' }}
+          >
+          </Player>
+        </div>
+        <div className="second-section">
+          <div className="img-container">
+            <img src="../../assets/Logo.svg" alt="YouTube Productive Logo" height="80"></img>
+          </div>
+          <Title level={5}>Decide what to watch and for how long.</Title>
+          <Title level={5}>Break free out of bad YouTube habits or addiction.</Title>
+          <div className="img-container">
+            <img src="../../assets/HomeSalyOnARocket.png" alt="Good Usage" height="270"></img>
+          </div>
+          <Title level={5}>Choose what type of videos you want or don't want to see. start now!</Title>
+          <div className="submit-button">
+            {firstOptionsConfig ? (
+              <NavigateToButton
+                text="Let's Start!"
+                clickOnElementId="MyYouTubeMenuItem"
+                path="/MyYouTube"
+                disabled={false}
+                onClick={null}
+              />
+            ) : null}
+          </div>
+        </div>
+      </Col>
+    </Row>
+
   );
 }

@@ -1,9 +1,27 @@
-@import '~antd/dist/antd.css';
-
-// $primary-color: darkblue;
-// $background-color: #BADA55;
-
 // Chrome applies an 8px margin by default (gross).
 body {
     margin: 0px;
 }
+
+.header {
+    height: 8vh;
+}
+
+.spacer {
+    height: 2em;
+    width: 0.01vw;
+}
+
+.submit-button {
+    margin-top: 4em;
+}
+
+.my-sider{
+    margin-top: 40px;
+    border-right: 2px solid #EBEBEB;
+}
+
+.ant-menu-item-icon {
+    vertical-align: sub !important;
+}
+

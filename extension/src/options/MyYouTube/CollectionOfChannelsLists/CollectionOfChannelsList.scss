@@ -5,6 +5,10 @@
     // border-radius: 5px;
   }
 
+  .collection-list {
+    height: 50vh;
+    overflow-y: auto;
+  }
 
   // ----- Scroll -----
 /* width */
@@ -27,4 +31,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #777; 
 }
-  

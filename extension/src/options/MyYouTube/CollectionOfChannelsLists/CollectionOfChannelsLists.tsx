@@ -11,6 +11,7 @@ export default function CollectionOfChannelsLists({
   value = {},
   onChange = null,
   initialValues = [],
+  disabled,
 }): JSX.Element {
   // ----- State -----
   const [collection, setCollection] = React.useState(initialValues);
@@ -71,7 +72,7 @@ export default function CollectionOfChannelsLists({
   };
 
   return (
-    <>
+    <div style={disabled ? { pointerEvents: "none", opacity: "0.3" } : {}}>
       <Row style={{ marginBottom: "1em" }}>
         <Col span={14}>
           <ChannelsListsSearch
@@ -85,6 +86,7 @@ export default function CollectionOfChannelsLists({
       <Row>
         <Col span={14} className="container">
           <List
+            className="collection-list"
             itemLayout="vertical"
             size="small"
             dataSource={collection}
@@ -107,6 +109,6 @@ export default function CollectionOfChannelsLists({
           {selectedItem ? <ChannelsListShow list={selectedItem.list} /> : null}
         </Col>
       </Row>
-    </>
+    </div>
   );
 }

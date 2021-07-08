@@ -17,7 +17,7 @@ var scrollPosition = 0;
 
 
 // --- Run ---
-// When you navigate between pages in the website
+// When you navigate between pages inside YouTube
 onNavigationProgressBarEnd(() => {
     setTimeout(() => {
         filter();
@@ -131,14 +131,14 @@ function testIfFirstFilteredIndexIsMistake(videos) {
 }
 
 function shouldRemoveVideo(channelName) {
-    if (user.listType === CONST.LIST_TYPE.BLACK_LIST) {
-        if (channelName in user.list) {
+    if (user.myYoutube.listType === CONST.LIST_TYPE.BLACK_LIST) {
+        if (channelName in user.myYoutube.list) {
             console.log(channelName);
             // video.querySelector('#thumbnail').remove();
             return true;
         }
     } else { // it's a white list
-        if (channelName && !(channelName in user.list)) {
+        if (channelName && !(channelName in user.myYoutube.list)) {
             console.log(channelName);
             // video.querySelector('#thumbnail').remove();
             return true;

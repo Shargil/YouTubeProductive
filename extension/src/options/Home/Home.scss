@@ -1,0 +1,30 @@
+.img-container {
+    display: flex;
+    justify-content: center;
+    margin: 2em 0em;
+}
+
+.first-section {
+    height: calc(100vh - 80px - 24px);
+}
+
+.second-section {
+    height: calc(70vh);
+}
+
+@keyframes float {
+	0% {
+		transform: translatey(0px);
+	}
+	50% {
+		transform: translatey(-20px);
+	}
+	100% {
+		transform: translatey(0px);
+	}
+}
+
+.float-in-space {
+	transform: translatey(0px);
+	animation: float 6s ease-in-out infinite;
+}

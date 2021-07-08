@@ -7,14 +7,20 @@ try {
         chrome.storage.sync.set({
             user: {
                 extensionMode: CONST.EXTN_MODE.FILTER,
-                listType: CONST.LIST_TYPE.BLACK_LIST,
-                list: CONST.LISTS.DEFAULT_BLACK,
-                fullLists: [],
                 firstOptionsConfig: true,
+                myYoutube: {
+                    listType: CONST.LIST_TYPE.BLACK_LIST,
+                    list: CONST.LISTS.DEFAULT_BLACK,
+                    fullListsBlack: [],
+                    fullListsWhite: [],
+                },
                 focus: {
-                    focusLevel: "regular",
+                    focusLevel: "deepFocus",
                     sessionStartTime: null,
                     blockStartTime: null,
+                },
+                options: {
+                    thumbnailsRemoved: false,
                 }
             }
         }, () => { });
@@ -43,14 +49,16 @@ try {
             chrome.webNavigation.onCompleted.addListener(
                 function onComplete() {
                     console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
-                    runScript("./contentScripts/sharedFunctions.js", details.tabId);
 
                     chrome.storage.sync.get("user", (res) => {
+                        runScript("./contentScripts/sharedFunctions.js", details.tabId);
                         if (res.user.focus.focusLevel === "deepFocus")
                             runScript("./deepFocus.js", details.tabId);
+                        runScript(filterOrSearchOnlyPath(res.user), details.tabId);
+                        if (res.user.options.thumbnailsRemoved)
+                            runScript("./contentScripts/noThumbnails.js", details.tabId);
                     })
 
-                    runExtensionModeScript(details.tabId);
                     chrome.webNavigation.onCompleted.removeListener(onComplete);
                 });
         }
@@ -63,8 +71,11 @@ try {
                 isOneOfListedYouTubeUrls(changeInfo.url)) {
                 if (makeSureNotSameVideoWatchBug(changeInfo.url)) {
                     console.log("--- On YouTube Navigate To new Page With Videos Suggestions --- " + changeInfo.url);
+
                     runScript("./contentScripts/sharedFunctions.js", tabId);
-                    runExtensionModeScript(tabId);
+                    runScript(filterOrSearchOnlyPath(res.user), details.tabId);
+                    if (res.user.options.thumbnailsRemoved)
+                        runScript("./contentScripts/noThumbnails.js", details.tabId);
                 }
             }
         }
@@ -78,6 +89,8 @@ try {
             chrome.storage.sync.get("user", (res) => {
                 if (res.user.extensionMode === CONST.EXTN_MODE.FILTER)
                     runScript("./contentScripts/runFilterOnNewVideos.js", details.tabId)
+                // if (res.user.options.thumbnailsRemoved)
+                //     runScript("./contentScripts/noThumbnails.js", details.tabId);
             });
         },
         { urls: youTubeRequestMoreVideosURLs });
@@ -91,6 +104,8 @@ try {
             if (url.searchParams.get("cmt") === url.searchParams.get("len")) {
                 console.log("--- On YouTube Video Ends ---" + details.url);
                 runScript("./contentScripts/runFilterOnVideoEnds.js", details.tabId);
+                if (res.user.options.thumbnailsRemoved)
+                    runScript("./contentScripts/noThumbnails.js", details.tabId);
             }
         },
         { urls: watchTimeStatsUrl });
@@ -146,18 +161,15 @@ try {
         }
     );
 
+
     // --- Extra Functions ---
-    function runExtensionModeScript(tabId) {
-        chrome.storage.sync.get("user", (res) => {
-            switch (res.user.extensionMode) {
-                case CONST.EXTN_MODE.FILTER:
-                    runScript('./contentScripts/filter.js', tabId);
-                    break;
-                case CONST.EXTN_MODE.SEARCH_ONLY:
-                    runScript('./contentScripts/searchOnly.js', tabId);
-                    break;
-            }
-        });
+    function filterOrSearchOnlyPath(user) {
+        switch (user.extensionMode) {
+            case CONST.EXTN_MODE.FILTER:
+                return './contentScripts/filter.js';
+            case CONST.EXTN_MODE.SEARCH_ONLY:
+                return './contentScripts/searchOnly.js';
+        }
     }
 
     function runScript(scriptPath, tabId) {
@@ -172,7 +184,6 @@ try {
     function isOneOfListedYouTubeUrls(url) {
         return youTubeUrlsRegExp.some(urlExpression => urlExpression.test(url));
     }
-
 
     var lastYouTubeUrl;
     function makeSureNotSameVideoWatchBug(currYTUrl) {
