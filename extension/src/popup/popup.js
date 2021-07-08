@@ -1,18 +1,13 @@
 chrome.storage.sync.get(["CONST", "user"], (res) => {
     setModeButtonToPreviewsSaved(res.user.extensionMode);
-    setMyYouTubeIs(res.user.listType, res.user.fullLists);
-
-    document.getElementById('menu-icon').onclick = () => {
-        console.log("You clicked on menu!");
-    }
+    setMyYouTubeIs(res.user.myYoutube);
+    settingsAndLogoOnClick();
+    setFocusLevelIcon(res.user.focus);
 
     document.getElementById('searchOnly').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.SEARCH_ONLY);
     console.log(res.CONST.EXTN_MODE.SEARCH_ONLY);
     document.getElementById('filter').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.FILTER);
     console.log(res.CONST.EXTN_MODE.FILTER);
-    document.getElementById('anotherOption').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.ANOTHER_OPTION);
-    console.log(res.CONST.EXTN_MODE.ANOTHER_OPTION);
-    // document.getElementById('noThumbnails').onclick = onModeClick.bind(this, res.CONST.EXTN_MODE.NO_THUMBNAILS);
 
     function onModeClick(wantedMode, event) {
         event.preventDefault;
@@ -33,7 +28,7 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
                         const frictionMode = "math";
                         if (frictionMode === "math") {
                             let rightAnswers = 0;
-                            const neededAnswers = 1;
+                            const neededAnswers = 3;
                             let answer = createNewMathProblem();
                             document.querySelector('.friction-math-container').classList.add("friction-on-math-container");
 
@@ -99,9 +94,8 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
 
     const extnModeStrictLevels = {
         "off": 0,
-        "anotherOption": 1,
-        "filter": 2,
-        "searchOnly": 3
+        "filter": 1,
+        "searchOnly": 2
     }
 
     function wantedModeIsEasier(currentMode, wantedMode) {
@@ -112,9 +106,8 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
     function createNewMathProblem() {
         document.querySelector('.friction-math-input').value = "";
 
-        let randomNumberOne = getRndInteger(100, 1000);
-        // let randomNumberTwo = getRndInteger(10, 100);
-        let randomNumberTwo = 10;
+        let randomNumberOne = getRndInteger(1, 100);
+        let randomNumberTwo = getRndInteger(2, 10);
 
         document.getElementById('friction-math-number-one').innerText = randomNumberOne;
         document.getElementById('friction-math-number-two').innerText = randomNumberTwo;
@@ -179,7 +172,7 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
         function showConfetti(lottiePlayerElement) {
             debugger;
             showElement(lottiePlayerElement);
-            lottiePlayerElement.load("../assets/confetti.json");
+            lottiePlayerElement.load("../assets/Lottie/confetti.json");
 
             lottiePlayerElement.addEventListener('complete', () => hideElement(lottiePlayerElement), { once: true });
         }
@@ -213,9 +206,9 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
         extensionModeElement.checked = true;
     }
 
-    function setMyYouTubeIs(type, fullLists) {
-
-        let htmlString = '<p>My YouTube is' + (type === res.CONST.LIST_TYPE.BLACK_LIST ? ' not' : '') + ': </p>';
+    function setMyYouTubeIs(myYoutube) {
+        let htmlString = '<p>My YouTube is' + (myYoutube.listType === res.CONST.LIST_TYPE.BLACK_LIST ? ' not' : '') + ': </p>';
+        const fullLists = myYoutube.listType === res.CONST.LIST_TYPE.BLACK_LIST ? myYoutube.fullListsBlack : myYoutube.fullListsWhite;
         for (const fullList of fullLists) {
             htmlString +=
                 '<div class="channels-list-label">' +
@@ -233,6 +226,32 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
                 if (chrome.runtime.openOptionsPage) {
                     chrome.runtime.openOptionsPage();
                 }
+            }
+        }
+    }
+
+    function settingsAndLogoOnClick() {
+        const buttons = document.querySelectorAll('#logo, #settings')
+        for (const btn of buttons) {
+            btn.onclick = function () {
+                if (chrome.runtime.openOptionsPage) {
+                    chrome.runtime.openOptionsPage();
+                }
+            }
+        }
+    }
+
+    function setFocusLevelIcon(focus) {
+        let focusLevelBtn = document.getElementById("focusLevelBtn")
+        if (focus.focusLevel === "deepFocus") {
+            imgSrc = "../assets/DeepFocus.png";
+        } else {
+            imgSrc = "../assets/FocusRegular.png";
+        }
+        focusLevelBtn.innerHTML = "<img src=" + imgSrc + " alt='Focus Level Indicator' height='28'/>";
+        focusLevelBtn.onclick = function () {
+            if (chrome.runtime.openOptionsPage) {
+                chrome.runtime.openOptionsPage();
             }
         }
     }

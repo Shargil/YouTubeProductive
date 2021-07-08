@@ -7,10 +7,13 @@ html {
 }
 /* Usage: var(--primaryRed); */
 :root {
+
   --primaryRed: #FF0000;
-  --whiteText: hsl(0, 0%, 100%); /* Good on...*/
-  --blackText: #000000; 
+  --whiteText: #FFFFFF;
+  --blackText: "#19202C"; 
+  /* --greyText: #ABABAB;  */
   --greyText: #626262; 
+  /* --lightGreyBG: #EBEBEB;  */
   --lightGreyBG: #f6f6f6; 
 }
 
@@ -72,20 +75,36 @@ header {
 }
 
 .left {
-  flex: 1;
+  flex: 4;
+  display: flex;
+  align-items: center;
+}
+
+.left button {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  flex: 16;
+  display: flex;
+  justify-content: center;
 }
 
 .right {
-  flex: 1;
+  flex: 4;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-#menu-icon {
-  background-color: transparent;
+.right button {
+  display: flex;
+  align-items: center;
 }
-
 
 #modes {
-  margin: 0% 5%; 
+  margin: 0% 22%; 
   padding: 10px 1px;
   background-color: var(--lightGreyBG);
   border-radius: 5px;
@@ -199,7 +218,7 @@ header {
   transition: .6s;
   font-size: inherit;
   position: relative;
-  top: -25%;
+  top: -22.5%;
 }
 
 .friction-math-container {
@@ -258,21 +277,6 @@ header {
   text-align: start;
   -webkit-rtl-ordering: logical;
   cursor: text;
-
-
-
-/* 
-  
-  font: inherit;
-  color: currentColor;
-  border: 0;
-  height: 1.1876em;
-  margin: 0;
-  display: block;
-  background: none;
-  box-sizing: content-box;
-  -webkit-tap-highlight-color: transparent;
-  border-bottom: 1px solid var(--greyText); */
 }
 
 /* Remove Arrows */

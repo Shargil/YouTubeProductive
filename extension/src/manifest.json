@@ -21,10 +21,10 @@
     "action": {
         "default_popup": "./popup/popup.html",
         "default_icon": {
-            "16": "icons/youtube-16x16.png",
-            "32": "icons/youtube-32x32.png",
-            "48": "icons/youtube-32x32.png",
-            "128": "icons/youtube-128x128.png"
+            "16": "icons/16X16.png",
+            "32": "icons/32X32.png",
+            "48": "icons/48X48.png",
+            "128": "icons/128X128.png"
         }
     },
     "icons": {

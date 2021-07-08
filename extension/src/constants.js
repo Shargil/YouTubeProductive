@@ -3,7 +3,6 @@ const CONST = Object.freeze({
   EXTN_MODE: {
     SEARCH_ONLY: "searchOnly",
     FILTER: "filter",
-    ANOTHER_OPTION: "anotherOption",
     OFF: "off",
   },
   DEV_MODE: {
