@@ -15,7 +15,8 @@
     ],
     "host_permissions": [
         "https://www.youtube.com/*",
-        "http://127.0.0.1:3000/*"
+        "http://127.0.0.1:3000/*",
+        "http://3.142.156.170/*"
     ],
     "action": {
         "default_popup": "./popup/popup.html",
