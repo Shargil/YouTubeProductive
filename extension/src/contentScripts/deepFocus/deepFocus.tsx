@@ -13,7 +13,7 @@ let containerElement = document.createElement("div");
 containerElement.setAttribute("id", "deepFocusContainer");
 document.body.appendChild(containerElement);
 
-export function DeepFocus({}): JSX.Element {
+export function DeepFocus({ }): JSX.Element {
   // ----- State -----
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [limitMinutes, setLimitMinutes] = React.useState<number>(undefined);
@@ -35,7 +35,7 @@ export function DeepFocus({}): JSX.Element {
           changeToSearchOnly();
           chrome.runtime.sendMessage(
             { contentScriptFuncs: "blockAllOtherYouTubeTabs" },
-            (res) => {}
+            (res) => { }
           );
           return;
         }
@@ -95,9 +95,9 @@ export function DeepFocus({}): JSX.Element {
 
   const changeToSearchOnly = () => {
     chrome.storage.sync.get("user", (res) => {
-      let updatedUser = res.user;
+      let updatedUser: User = res.user;
       updatedUser.extensionMode = EXTN_MODE.SearchOnly;
-      chrome.storage.sync.set({ user: updatedUser }, () => {});
+      chrome.storage.sync.set({ user: updatedUser }, () => { });
     });
   };
 
