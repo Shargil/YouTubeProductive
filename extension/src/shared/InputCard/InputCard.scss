@@ -2,20 +2,16 @@
     height: 420px !important;
     width: 360px !important;
     position: relative !important;
-    left: -45px;
+    left: -45px; // A work around. Placing the card under the native radio button
     -webkit-appearance: none;
     appearance: none;
-    background-color: var(--white);
-    height: 100%;
-    width: 100%;
     border: 2px solid rgba(2,28,53,0.08);
     border-radius: 14px;
-    position: absolute;
     box-shadow: 7px 7px 15px rgba(2,28,53,0.08);
     cursor: pointer;
     outline: none;
 
-    .header-container{
+    .header-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -29,6 +25,11 @@
     img {
         margin: 0.5em 0em 1em 0em;
     } 
+}
+
+.card-title {
+    font-size: 20px !important;
+    margin-top: 16px !important;
 }
 
 .checked {

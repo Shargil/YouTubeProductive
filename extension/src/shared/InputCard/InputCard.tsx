@@ -1,5 +1,5 @@
-import Title from "antd/lib/typography/Title";
 import React from "react"
+import Title from "antd/lib/typography/Title";
 
 import "./InputCard.scss"
 
@@ -14,7 +14,7 @@ export function InputCard({ title, checked, imgPath, points }): JSX.Element {
     return (
         <div className={checked ? "card checked" : "card"}>
             <div className="header-container">
-                <Title style={{ fontSize: "20px", marginTop: "16px" }}>{title}</Title>
+                <Title className="card-title">{title}</Title>
                 <img src={imgPath} alt="regular focus"></img>
             </div>
             <ul>
@@ -22,6 +22,6 @@ export function InputCard({ title, checked, imgPath, points }): JSX.Element {
                     <li key={point.toString()}>{point}</li>
                 )}
             </ul>
-        </div>
+        </div >
     );
 }
