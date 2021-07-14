@@ -66,7 +66,7 @@ export function OtherOptions({ firstOptionsConfig }): JSX.Element {
             <div className="switch-container">
               <Form.Item name="thumbnailsRemoved" valuePropName="checked" noStyle >
                 <Switch />
-              </Form.Item> <span className="switch-label">Remove thumbnails photos and preview gifs</span>
+              </Form.Item> <span className="switch-label">Remove thumbnails photos and preview gifs (WIP - works only in home, explore and watch)</span>
             </div>
             <div className="switch-container">
               <Form.Item name="demo" valuePropName="checked" noStyle >

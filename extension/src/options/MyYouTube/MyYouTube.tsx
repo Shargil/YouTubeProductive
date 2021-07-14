@@ -114,7 +114,7 @@ export default function MyYouTube({ firstOptionsConfig }): JSX.Element {
 
         <Row className="space-between-children">
           <Title level={3}>Decide what type of channels you want or don't want to watch!</Title>
-          <Tooltip title="prompt text">
+          <Tooltip title="Choose couple of channels list, videos from those channels will be removed from your YouTube by the extension. You can always come back here and change it">
             <div className="how-it-works">
               <QuestionCircleOutlined style={{ marginRight: 10 }} /> How it works?
             </div>
