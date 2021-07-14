@@ -1,8 +1,8 @@
 try {
     importScripts("constants.js");
-    // --- On Install ---
+    // ----- On Install -----
     chrome.runtime.onInstalled.addListener(function () {
-        console.log("--- On Install ---");
+        console.log("----- On Install -----");
         chrome.storage.sync.set({ CONST: CONST }, () => { });
         chrome.storage.sync.set({
             user: {
@@ -42,21 +42,16 @@ try {
         chrome.runtime.openOptionsPage(() => { });
     });
 
-    // --- On Entering YouTube (or reloading) --- 
+    // ----- On Entering YouTube (or reloading) ----- 
     chrome.webNavigation.onCommitted.addListener((details) => {
         if (["reload", "link", "typed", "generated"].includes(details.transitionType) &&
             isYouTubeUrl(details.url)) {
             chrome.webNavigation.onCompleted.addListener(
                 function onComplete() {
-                    console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
+                    console.log("----- On Entering YouTube (or reloading) ----- | transitionType: " + details.transitionType);
 
                     chrome.storage.sync.get("user", (res) => {
-                        runScript("./contentScripts/sharedFunctions.js", details.tabId);
-                        if (res.user.focus.focusLevel === "deepFocus")
-                            runScript("./deepFocus.js", details.tabId);
-                        runScript(filterOrSearchOnlyPath(res.user), details.tabId);
-                        if (res.user.options.thumbnailsRemoved)
-                            runScript("./contentScripts/noThumbnails.js", details.tabId);
+                        injectContentScripts(true, false, false, res.user, details.url, details.tabId);
                     })
 
                     chrome.webNavigation.onCompleted.removeListener(onComplete);
@@ -64,53 +59,46 @@ try {
         }
     });
 
-    // --- On YouTube Navigate to new Page (URL) With Videos Suggestions --- 
+    // ----- On YouTube Navigate to new Page (URL) With Videos Suggestions ----- 
     chrome.tabs.onUpdated.addListener(
         function (tabId, changeInfo, tab) {
             if (changeInfo.url &&
                 isYouTubeTabWithSuggestions(changeInfo.url)) {
                 if (makeSureNotSameVideoWatchBug(changeInfo.url)) {
-                    console.log("--- On YouTube Navigate To new Page With Videos Suggestions --- " + changeInfo.url);
+                    console.log("----- On YouTube Navigate To new Page With Videos Suggestions ----- " + changeInfo.url);
 
-                    runScript("./contentScripts/sharedFunctions.js", tabId);
-                    runScript(filterOrSearchOnlyPath(res.user), details.tabId);
-                    if (res.user.options.thumbnailsRemoved)
-                        runScript("./contentScripts/noThumbnails.js", details.tabId);
+                    chrome.storage.sync.get("user", ({ user }) => {
+                        injectContentScripts(false, true, false, user, changeInfo.url, tabId);
+                    });
                 }
             }
         }
     );
 
-    // --- On YouTube Request More Videos ---
+    // ----- On YouTube Request More Videos -----
     chrome.webRequest.onCompleted.addListener( // onCompleted? onResponseStarted? just try in real time, with no debugging, black list and white list, what works better.
         details => {
-            console.log("--- On YouTube Request More Videos ---" + details.url);
-
-            chrome.storage.sync.get("user", (res) => {
-                if (res.user.extensionMode === CONST.EXTN_MODE.FILTER)
-                    runScript("./contentScripts/runFilterOnNewVideos.js", details.tabId)
-                // if (res.user.options.thumbnailsRemoved)
-                //     runScript("./contentScripts/noThumbnails.js", details.tabId);
-            });
+            console.log("----- On YouTube Request More Videos -----" + details.url);
         },
         { urls: youTubeRequestMoreVideosURLs });
 
 
-    // --- On YouTube Video Ends ---
+    // ----- On YouTube Video Ends -----
     chrome.webRequest.onCompleted.addListener(
         details => {
             var url = new URL(details.url);
             // If the current time and length of the video are the same, it's the end.  
             if (url.searchParams.get("cmt") === url.searchParams.get("len")) {
-                console.log("--- On YouTube Video Ends ---" + details.url);
-                runScript("./contentScripts/runFilterOnVideoEnds.js", details.tabId);
-                if (res.user.options.thumbnailsRemoved)
-                    runScript("./contentScripts/noThumbnails.js", details.tabId);
+                console.log("----- On YouTube Video Ends -----" + details.url);
+
+                chrome.storage.sync.get("user", ({ user }) => {
+                    injectContentScripts(false, false, true, user, details.url, details.tabId);
+                });
             }
         },
         { urls: watchTimeStatsUrl });
 
-    // --- On Messages ---
+    // ----- On Messages -----
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
             if (request.contentScriptFuncs) {
@@ -162,13 +150,50 @@ try {
     );
 
 
-    // --- Extra Functions ---
-    function filterOrSearchOnlyPath(user) {
-        switch (user.extensionMode) {
-            case CONST.EXTN_MODE.FILTER:
-                return './contentScripts/filter.js';
-            case CONST.EXTN_MODE.SEARCH_ONLY:
-                return './contentScripts/searchOnly.js';
+    // ----- Extra Functions -----
+    function injectContentScripts(isEnterOrReload, isNavigateToNewPage, isEndOfVideo, user, url, tabId) {
+
+        if (isEnterOrReload) {
+            runScript("./contentScripts/sharedFunctions.js", tabId);
+            runScript("./contentScripts/filter/filterSharedFunctions.js", tabId);
+
+            if (user.focus.focusLevel === "deepFocus")
+                runScript("./deepFocus.js", tabId);
+        }
+
+        if (isEnterOrReload || isNavigateToNewPage) {
+            if (user.extensionMode === "searchOnly") { // Convert me as well to: observer mutation with getElement() and splitted files 
+                runScript("./contentScripts/searchOnly.js", tabId);
+            }
+
+            // Home Feed 
+            if (url === "https://www.youtube.com/") {
+                if (user.extensionMode === "filter")
+                    runScript("./contentScripts/filter/filterHome.js", tabId);
+                if (user.options.thumbnailsRemoved)
+                    runScript("./contentScripts/noThumbnails/noThumbnailsHome.js", tabId);
+            }
+            // Watch Video
+            else if (url.startsWith("https://www.youtube.com/watch")) {
+                if (user.extensionMode === "filter")
+                    runScript("./contentScripts/filter/filterWatchVideo.js", tabId);
+                if (user.options.thumbnailsRemoved)
+                    runScript("./contentScripts/noThumbnails/noThumbnailsWatchVideo.js", tabId);
+            }
+            // Explore Feed
+            else if (url.startsWith("https://www.youtube.com/feed/explore")) {
+                if (user.extensionMode === "filter")
+                    runScript("./contentScripts/filter/filterExplore.js", tabId);
+                if (user.options.thumbnailsRemoved)
+                    runScript("./contentScripts/noThumbnails/noThumbnailsExplore.js", tabId);
+            }
+        }
+
+        if (isEndOfVideo) {
+            if (user.extensionMode === CONST.EXTN_MODE.FILTER)
+                runScript("./contentScripts/filter/filterVideoEnds.js", tabId);
+            if (user.options.thumbnailsRemoved)
+                runScript("./contentScripts/noThumbnails/noThumbnailsVideoEnds.js", tabId);
         }
     }
 
@@ -215,4 +240,5 @@ try {
         }
         return url;
     }
+
 } catch (e) { console.error(e); }

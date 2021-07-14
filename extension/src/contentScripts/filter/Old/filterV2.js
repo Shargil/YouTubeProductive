@@ -1,6 +1,11 @@
 
 console.log("--- main filter.js run ---")
 
+// Compering mainly: document.querySelectorAll vs observer mutation only direct children.
+// filter (document.querySelectorAll) devtool loading home page profiling: 37.57 ms, 14.14 ms, 21.75 ms, 27.5
+// onEveryChildAdded     devtool loading home page profiling: 0.4ms/0.7ms  , 0.4ms/0.7ms, 0.4ms/0.8ms  , 0.5ms/0.8ms, 0.3ms/0.6ms, 0.4ms/0.7ms  , 0.3ms/0.6ms = 2.7/ 7 = 0.38ms  
+// (8.42ms / 0.38 = 22 times faster!)
+
 
 // --- init ---
 var CONST;
@@ -20,13 +25,13 @@ var scrollPosition = 0;
 // When you navigate between pages inside YouTube
 onNavigationProgressBarEnd(() => {
     setTimeout(() => {
-        filter();
+        filterHome();
     }, 500);
 },
     () => {
         console.log("progress bar didn't exist!")
         setTimeout(() => {
-            filter();
+            filterHome();
         }, 500);
     });
 
@@ -42,7 +47,7 @@ window.onscroll = function () {
  *      See witch one to remove
  *      Save the removed ones
  */
-function filter() {
+function filterHome() {
     console.log("--- filter() - filter.js ---")
 
     let videos = document.querySelectorAll(query);
