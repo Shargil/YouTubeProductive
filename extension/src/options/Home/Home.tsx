@@ -17,7 +17,28 @@ export function Home({ firstOptionsConfig }): JSX.Element {
   return (
     <Row>
       <Col span={8} offset={7} style={{ minWidth: "500px" }}>
-        <div className="first-section">
+
+        {firstOptionsConfig ? (
+          <div className="first-section">
+            {/* <Title level={5}>היי חברה ברוכים הבאים לבטא!!! תנסו להשתמש רגיל, כל דבר שעולה לכם אשמח שפשוט תכתבו לי בוואטסאפ עוד כמה ימים בטח אחפור לכם :)י</Title> */}
+            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>Hey Guys, It's Yam</Title>
+            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>Welcome to the beta!</Title>
+            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>I am grateful for your help as the first users 🙏</Title>
+            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>Try the extension normally, and when a suggestion comes to mind just whatsapp me :)</Title>
+            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>It's going to be a buggy ride, when something doesn't work as it should or suggestion comes to mind pls whatsapp me :)</Title>
+            <Player
+              autoplay
+              loop
+              src="https://assets5.lottiefiles.com/packages/lf20_pfjyrl26.json"
+              style={{ height: '80px', width: '80px' }}
+            >
+            </Player>
+          </div>
+        ) : null}
+
+
+        <div className={firstOptionsConfig ? "middle-section" : "first-section"}>
+
           <Title level={3}>Create the YouTube that grows you.</Title>
           <Title level={5}>YouTube has amazing algorithms. Using magic, they know what videos going to keep us watching YouTube the longest.</Title>
           <div className="spacer"></div>
@@ -26,7 +47,7 @@ export function Home({ firstOptionsConfig }): JSX.Element {
           </div>
           <Title level={5}>Too many times we find our selfs watching stupid videos at 3 AM or not doing the work that we should.</Title>
           <Title level={5}>But blocking YouTube all together is not the solution.</Title>
-          <Title level={5}>There is too much stuff to learn, too many interesting quality videos.</Title>
+          <Title level={5}>There is too much stuff to learn, too many interesting quality videos to watch.</Title>
           <Title level={5}>The time has come.</Title>
           <Player
             autoplay
@@ -36,7 +57,8 @@ export function Home({ firstOptionsConfig }): JSX.Element {
           >
           </Player>
         </div>
-        <div className="second-section">
+
+        <div className="last-section">
           <div className="img-container">
             <img src="../../assets/Logo.svg" alt="YouTube Productive Logo" height="80"></img>
           </div>
@@ -59,7 +81,7 @@ export function Home({ firstOptionsConfig }): JSX.Element {
           </div>
         </div>
       </Col>
-    </Row>
+    </Row >
 
   );
 }

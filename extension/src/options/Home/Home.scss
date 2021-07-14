@@ -5,11 +5,15 @@
 }
 
 .first-section {
-    height: calc(100vh - 80px - 24px);
+    height: calc(100vh - 8vh); // Replace to header Height
 }
 
-.second-section {
-    height: calc(70vh);
+.middle-section {
+	height: 100vh;
+}
+
+.last-section {
+    height: calc(100vh - 74px); // Replace to footer Height
 }
 
 @keyframes float {
