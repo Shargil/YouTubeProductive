@@ -45,7 +45,7 @@ try {
     // --- On Entering YouTube (or reloading) --- 
     chrome.webNavigation.onCommitted.addListener((details) => {
         if (["reload", "link", "typed", "generated"].includes(details.transitionType) &&
-            isOneOfListedYouTubeUrls(details.url)) {
+            isYouTubeUrl(details.url)) {
             chrome.webNavigation.onCompleted.addListener(
                 function onComplete() {
                     console.log("--- On Entering YouTube (or reloading) --- | transitionType: " + details.transitionType);
@@ -68,7 +68,7 @@ try {
     chrome.tabs.onUpdated.addListener(
         function (tabId, changeInfo, tab) {
             if (changeInfo.url &&
-                isOneOfListedYouTubeUrls(changeInfo.url)) {
+                isYouTubeTabWithSuggestions(changeInfo.url)) {
                 if (makeSureNotSameVideoWatchBug(changeInfo.url)) {
                     console.log("--- On YouTube Navigate To new Page With Videos Suggestions --- " + changeInfo.url);
 
@@ -181,8 +181,12 @@ try {
             () => { });
     }
 
-    function isOneOfListedYouTubeUrls(url) {
+    function isYouTubeTabWithSuggestions(url) {
         return youTubeUrlsRegExp.some(urlExpression => urlExpression.test(url));
+    }
+
+    function isYouTubeUrl(url) {
+        return new RegExp("^(https://www.youtube.com/)").test(url);
     }
 
     var lastYouTubeUrl;
