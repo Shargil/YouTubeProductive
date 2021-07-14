@@ -10,7 +10,7 @@ try {
                 firstOptionsConfig: true,
                 myYoutube: {
                     listType: CONST.LIST_TYPE.BLACK_LIST,
-                    list: CONST.LISTS.DEFAULT_BLACK,
+                    list: [],
                     fullListsBlack: [],
                     fullListsWhite: [],
                 },
