@@ -197,6 +197,33 @@ header {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
+
+#badge-container {
+  position: absolute;
+  top: 155px;
+  left: 185px;
+  /* display: none; */
+}
+
+#badge-container img {
+  position: absolute;
+}
+
+#badge-text-container {
+  width: calc(79px - 6px);
+  height: calc(60px - 6px);
+  padding: 3px;
+  text-align: center;
+  line-height: 1.25em;
+  /* text-shadow: 1.5px 1.5px 1px rgba(0,0,0,0.2); */
+}
+
+#badge-container span {
+  position: relative;
+  font-weight: 900 !important;
+  color: white;
+}
+
 #friction {
   height: 46%;
   border-top: 1px solid var(--lightGreyBG);
