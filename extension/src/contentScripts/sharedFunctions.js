@@ -1,4 +1,5 @@
 function onNavigationProgressBarEnd(onProgressEndCallBack, onProgressBarNotExistCallBack) {
+    // https://scrapbox.io/mabasasi/youtube_event_%E3%81%BE%E3%81%A8%E3%82%81
     // window.addEventListener("yt-navigate-finish", function (event) {
     //     alert("HEYyyyy windows!")
     // });

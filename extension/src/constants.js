@@ -13,54 +13,6 @@ const CONST = Object.freeze({
     WHITE_LIST: "white_list",
     BLACK_LIST: "black_list",
   },
-  LISTS: {
-    DEFAULT_BLACK: {
-      "MrBeast": true,
-      "Brandon Walsh": true,
-      "Jesse James West": true,
-      "Fast And Furious 4K": true,
-      "Easy Composites Ltd": true,
-      "James Bond 007": true,
-      "Movieclips": true,
-      "IMPAULSIVE Clips": true,
-      "Mumbo Jumbo": true,
-      "Linus Tech Tips": true,
-      "airrack": true,
-      "MrBeast Shorts": true,
-      "David Dobrik": true,
-      //   "UCX6OQ3DkcsbYNE6H8uQQuVA": true,    // MrBeast
-      //   "UCagjd6FJVi3nxR3HxH7KGQw": true,    // Brandon Walsh
-      //   "UCEjIjshJ8bvvCkGNk0pkYcA": true,    // Jesse James West
-      //   "UCGLHa1jJ9rLcHYi4qKVsNpg": true,    // Fast And Furious 4K
-      //   "user/easycompositestv": true,       // Easy Composites Ltd
-      //   "user/jamesbond007": true,           // James Bond 007
-      //   "user/movieclips": true,             // Movieclips
-      //   "UCE9ZKI1b_PhVm3gejYuilhw": true,    // IMPAULSIVE Clips
-      //   "user/ThatMumboJumbo": true,         // Mumbo Jumbo
-      //   "user/LinusTechTips": true,          // Linus Tech Tips
-      //   "UCyps-v4WNjWDnYRKmZ4BUGw": true,    // airrack
-      //   "UC4-79UOlP48-QNGgCko5p2g": true,    // MrBeast Shorts
-      //   "UCmh5gdwCx6lN7gEC20leNVA": true,    // David Dobrik
-
-    },
-    DEFAULT_WHITE: {
-      "Veritasium": true,
-      "Mark Rober": true,
-      "colinfurze": true,
-      "Kurzgesagt – In a Nutshell": true,
-      "ColdFusion": true,
-      "Medlife Crisis": true,
-      "טופ גיק": true,
-      "FitnessFAQs": true,
-      "Mike Boyd": true,
-      "Simone Giertz": true,
-      "Calisthenicmovement": true,
-      "Great Big Story": true,
-      "SmarterEveryDay": true,
-      "Real Engineering": true,
-
-    },
-  },
   YT_CATEGORY_ID_NAMES: {
     1: "Film & Animation",
     2: "Autos & Vehicles",
