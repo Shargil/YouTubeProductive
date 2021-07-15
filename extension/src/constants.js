@@ -83,14 +83,15 @@ const CONST = Object.freeze({
 // --- Constants that are being used only in "service_worker" files (background.js) or popup.js or options.js ---
 // This way we can save up some space in Storage API.
 // If we want to use something in a content script, move the const to CONST (above me)
-const youTubeUrlsRegExp = [
-  new RegExp("^(https://www.youtube.com/)$"),
-  new RegExp("^(https://www.youtube.com/feed/explore)$"),
-  new RegExp("^(https://www.youtube.com/feed/subscriptions)$"),
-  new RegExp("^(https://www.youtube.com/feed/library)$"),
-  new RegExp("^(https://www.youtube.com/playlist?)"),
-  new RegExp("^(https://www.youtube.com/watch?)"), // Watching a video
-];
+
+// const youTubeUrlsRegExp = [
+//   new RegExp("^(https://www.youtube.com/)$"),
+//   new RegExp("^(https://www.youtube.com/feed/explore)$"),
+//   new RegExp("^(https://www.youtube.com/feed/subscriptions)$"),
+//   new RegExp("^(https://www.youtube.com/feed/library)$"),
+//   new RegExp("^(https://www.youtube.com/playlist?)"),
+//   new RegExp("^(https://www.youtube.com/watch?)"), // Watching a video
+// ];
 
 const youTubeRequestMoreVideosURLs = [
   "https://www.youtube.com/youtubei/v1/browse?*", // Home screen - scrolling down

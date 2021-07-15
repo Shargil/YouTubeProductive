@@ -63,7 +63,7 @@ try {
     chrome.tabs.onUpdated.addListener(
         function (tabId, changeInfo, tab) {
             if (changeInfo.url &&
-                isYouTubeTabWithSuggestions(changeInfo.url)) {
+                isYouTubeUrl(changeInfo.url)) {
                 if (makeSureNotSameVideoWatchBug(changeInfo.url)) {
                     console.log("----- On YouTube Navigate To new Page With Videos Suggestions ----- " + changeInfo.url);
 
@@ -206,9 +206,9 @@ try {
             () => { });
     }
 
-    function isYouTubeTabWithSuggestions(url) {
-        return youTubeUrlsRegExp.some(urlExpression => urlExpression.test(url));
-    }
+    // function isYouTubeTabWithSuggestions(url) {
+    //     return youTubeUrlsRegExp.some(urlExpression => urlExpression.test(url));
+    // }
 
     function isYouTubeUrl(url) {
         return new RegExp("^(https://www.youtube.com/)").test(url);
