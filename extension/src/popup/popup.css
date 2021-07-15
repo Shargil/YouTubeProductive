@@ -200,7 +200,7 @@ header {
 
 #badge-container {
   position: absolute;
-  top: 155px;
+  top: 160px;
   left: 185px;
   /* display: none; */
 }
@@ -245,7 +245,7 @@ header {
   transition: .6s;
   font-size: inherit;
   position: relative;
-  top: -22.5%;
+  top: -15%;
 }
 
 .friction-math-container {

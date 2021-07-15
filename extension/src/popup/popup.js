@@ -22,7 +22,7 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
                         // addFriction(onFinished, onNotFinished)
                         document.querySelector('.friction-title').classList.add('friction-on-title');
                         // document.querySelector('.friction-title').innerText = 'Is changing to an "easier" mode \r\n the right thing to do right now?';
-                        document.querySelector('.friction-title').innerHTML = 'Let\'s make sure it\'s an aware decision! <br/> <span style="font-size: 12px;">That it\'s not that small voice in our heads saying "videos until 5AM!!!"';
+                        document.querySelector('.friction-title').innerHTML = 'Let\'s make sure it\'s an aware decision! <br/> <span style="font-size: 12px;">That it\'s not that small voice in our heads saying "videos until 5AM!!!" <br/> Solve this 3 problems to move to more "tempting" mode. <br/> And get better at simple math while doing it :) ';
 
 
                         const frictionMode = "math";

@@ -51,6 +51,8 @@ export default function CollectionOfChannelsLists({
       });
 
       setSelectedItem(currChannelsList);
+
+      message.warning("If you need any more lists, create one :) It helps all the other users as well! Just click on the + icon")
     }
   };
 

@@ -12,16 +12,31 @@ body {
     width: 0.01vw;
 }
 
-.submit-button {
-    margin-top: 4em;
+.first-section {
+    height: calc(100vh - 8vh); // Replace to header Height
 }
 
-.my-sider{
+.middle-section {
+	height: 100vh;
+}
+
+.last-section {
+    height: calc(100vh - 61px); // Replace to footer Height
+}
+
+.only-one-section {
+	min-height: calc(100vh - 8vh - 61px - 24px); // header, footer, padding of layout
+}
+
+.my-sider {
     margin-top: 40px;
     border-right: 2px solid #EBEBEB;
+}
+
+.submit-button {
+    margin-top: 3em;
 }
 
 .ant-menu-item-icon {
     vertical-align: sub !important;
 }
-

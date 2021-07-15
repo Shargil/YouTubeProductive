@@ -58,11 +58,12 @@ export function FocusLevel({ firstOptionsConfig }): JSX.Element {
     <>
       <Row>
         <Col span={16} offset={3} style={{ minWidth: "500px" }}>
-          <Title level={3}>Focus Level</Title>
-          <Title level={5}>Decide how much help you want with staying in focus and not letting YouTube become a distraction.</Title>
-          <div className="spacer"></div>
+          <div className="only-one-section">
+            <Title level={3}>Focus Level</Title>
+            <Title level={5}>Decide how much help you want with staying in focus and not letting YouTube become a distraction.</Title>
+            <div className="spacer"></div>
 
-          {/* <div className="cards-container">
+            {/* <div className="cards-container">
             <InputCard
               value={value}
               isChecked={value === FOCUS_LEVEL.Regular}
@@ -79,36 +80,36 @@ export function FocusLevel({ firstOptionsConfig }): JSX.Element {
               points={["When Entering YouTube no suggestions, no distractions", "Default extension mode: SearchOnly", "When switching to MyYouTube mode you will need to decide how much time you want to spend in the session! After the time is up, you will be blocked from YouTube for couple of minutes. Set back to searchOnly so you be able to use YouTube, if you need it to work."]} />
           </div> */}
 
-          <Radio.Group onChange={onChange} value={value} className="cards-container">
+            <Radio.Group onChange={onChange} value={value} className="cards-container">
 
-            <Radio value={FOCUS_LEVEL.Regular} className="radio-input-card-container">
-              <InputCard
-                title="Regular"
-                checked={value === FOCUS_LEVEL.Regular}
-                imgPath="../../assets/FocusRegular.svg"
-                points={["When Entering YouTube you can watch videos regularly.", "Default extension mode: MyYouTube"]} />
-            </Radio>
+              <Radio value={FOCUS_LEVEL.Regular} className="radio-input-card-container">
+                <InputCard
+                  title="Regular"
+                  checked={value === FOCUS_LEVEL.Regular}
+                  imgPath="../../assets/FocusRegular.svg"
+                  points={["When Entering YouTube you can watch videos regularly.", "Default extension mode: MyYouTube."]} />
+              </Radio>
 
-            <Radio value={FOCUS_LEVEL.DeepFocus} className="radio-input-card-container">
-              <InputCard
-                title="Deep Focus"
-                checked={value === FOCUS_LEVEL.DeepFocus}
-                imgPath="../../assets/DeepFocus.svg"
-                points={["When Entering YouTube no suggestions, no distractions", "Default extension mode: SearchOnly", "When switching to MyYouTube mode you will need to decide how much time you want to spend in the session! After the time is up, you will be blocked from YouTube for couple of minutes. Set back to searchOnly so you be able to use YouTube, if you need it to work."]} />
-            </Radio>
-          </Radio.Group>
-          {firstOptionsConfig ? (
-            <Button type="primary" onClick={onFinish} disabled={isButtonDisabled} className="submit-button">
-              Finish
-            </Button>
-          ) : (
-            <Button type="primary" onClick={onSave} disabled={isButtonDisabled} className="submit-button">
-              Save
-            </Button>
-          )}
+              <Radio value={FOCUS_LEVEL.DeepFocus} className="radio-input-card-container">
+                <InputCard
+                  title="Deep Focus"
+                  checked={value === FOCUS_LEVEL.DeepFocus}
+                  imgPath="../../assets/DeepFocus.svg"
+                  points={["When Entering YouTube: no suggestions, no distractions.", "Default extension mode: SearchOnly.", "When switching to MyYouTube mode you will need to decide how much time you want to spend in the session! After the time is up, you will be blocked from YouTube for couple of minutes. Set back to searchOnly so you be able to use YouTube, if you need it for work."]} />
+              </Radio>
+            </Radio.Group>
+            {firstOptionsConfig ? (
+              <Button type="primary" onClick={onFinish} disabled={isButtonDisabled} className="submit-button">
+                Finish
+              </Button>
+            ) : (
+              <Button type="primary" onClick={onSave} disabled={isButtonDisabled} className="submit-button">
+                Save
+              </Button>
+            )}
+          </div>
         </Col>
       </Row>
-
     </>
   );
 }

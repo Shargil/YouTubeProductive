@@ -23,9 +23,9 @@ export function Home({ firstOptionsConfig }): JSX.Element {
             {/* <Title level={5}>היי חברה ברוכים הבאים לבטא!!! תנסו להשתמש רגיל, כל דבר שעולה לכם אשמח שפשוט תכתבו לי בוואטסאפ עוד כמה ימים בטח אחפור לכם :)י</Title> */}
             <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>Hey Guys, It's Yam</Title>
             <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>Welcome to the beta!</Title>
-            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>I am grateful for your help as the first users 🙏</Title>
+            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>I am soo grateful for your help as the first users 🙏</Title>
             <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>Try the extension normally, and when a suggestion comes to mind just whatsapp me :)</Title>
-            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>It's going to be a buggy ride, when something doesn't work as it should or suggestion comes to mind pls whatsapp me :)</Title>
+            <Title level={5} style={{ fontSize: "14px", marginTop: "-0.4em" }}>P.S. It's probably going to be a buggy ride, when something doesn't work as it should, also pls text me.</Title>
             <Player
               autoplay
               loop

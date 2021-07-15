@@ -4,18 +4,6 @@
     margin: 2em 0em;
 }
 
-.first-section {
-    height: calc(100vh - 8vh); // Replace to header Height
-}
-
-.middle-section {
-	height: 100vh;
-}
-
-.last-section {
-    height: calc(100vh - 74px); // Replace to footer Height
-}
-
 @keyframes float {
 	0% {
 		transform: translatey(0px);

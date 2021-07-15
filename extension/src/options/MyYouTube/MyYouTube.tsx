@@ -120,7 +120,7 @@ export default function MyYouTube({ firstOptionsConfig }): JSX.Element {
             </div>
           </Tooltip>
         </Row>
-        <Title level={5}>YouTube amazing algorithms suck away your time with addicting trashy videos. You deserve YouTube that grows you. Choose your catagories.</Title>
+        <Title level={5}>YouTube suck away your time with addicting trashy videos. You deserve YouTube that grows you. Choose your catagories.</Title>
         <div className="spacer"></div>
 
         {!initialValues ? (
@@ -136,9 +136,15 @@ export default function MyYouTube({ firstOptionsConfig }): JSX.Element {
               <Radio.Group value={LIST_TYPE.BLACK_LIST} className="display-flex">
                 <Radio value={LIST_TYPE.BLACK_LIST} className="half">
                   I want MyYoutube to be everything but:
+                  <Tooltip title="Black list: remove all the videos that are created by channels on this list">
+                    <QuestionCircleOutlined style={{ color: "gray", marginLeft: "0.5em" }} />
+                  </Tooltip>
                 </Radio>
                 <Radio value={LIST_TYPE.WHITE_LIST} className="half">
                   I want MyYouTube to be only:
+                  <Tooltip title="White list: keeps only the videos that are created by channels on this list. It needs enough channels to work properly. Also, this option is going to be very visible when you using youtube if most of the videos you getting are not in this list. After a little use, youtube learns what to give you and it's getting better.">
+                    <QuestionCircleOutlined style={{ color: "gray", marginLeft: "0.5em" }} />
+                  </Tooltip>
                 </Radio>
               </Radio.Group>
             </Form.Item>

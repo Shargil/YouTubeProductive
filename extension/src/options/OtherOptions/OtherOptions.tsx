@@ -49,44 +49,40 @@ export function OtherOptions({ firstOptionsConfig }): JSX.Element {
   return (
     <Row>
       <Col span={16} offset={3} style={{ minWidth: "500px" }}>
+        <div className="only-one-section">
 
-        <Title level={3}>Other Options</Title>
-        <Title level={5}>Toggle your personal experience</Title>
-        <div className="spacer"></div>
+          <Title level={3}>Other Options</Title>
+          <Title level={5}>Toggle your personal experience</Title>
+          <div className="spacer"></div>
 
-        {!initialValues ? (
-          <Spin size="large" />
-        ) : (
-          <Form
-            name="otherOptionsForm"
-            initialValues={initialValues}
-            onValuesChange={onValuesChange}
-            onFinish={onSave}>
+          {!initialValues ? (
+            <Spin size="large" />
+          ) : (
+            <Form
+              name="otherOptionsForm"
+              initialValues={initialValues}
+              onValuesChange={onValuesChange}
+              onFinish={onSave}>
 
-            <div className="switch-container">
-              <Form.Item name="thumbnailsRemoved" valuePropName="checked" noStyle >
-                <Switch />
-              </Form.Item> <span className="switch-label">Remove thumbnails photos and preview gifs (WIP - works only in home, explore and watch)</span>
-            </div>
-            <div className="switch-container">
-              <Form.Item name="demo" valuePropName="checked" noStyle >
-                <Switch />
-              </Form.Item> <span className="switch-label">Give me ice cream every time I say Banana</span>
-            </div>
-            <div className="switch-container">
-              <Form.Item name="demo" valuePropName="checked" noStyle >
-                <Switch />
-              </Form.Item> <span className="switch-label">Tackle the monkey first</span>
-            </div>
+              <div className="switch-container">
+                <Form.Item name="thumbnailsRemoved" valuePropName="checked" noStyle >
+                  <Switch />
+                </Form.Item> <span className="switch-label">Remove thumbnails photos and preview gifs (WIP - works only in home, explore and watch)</span>
+              </div>
+              <div className="switch-container">
+                <Form.Item name="iceCream" valuePropName="checked" noStyle >
+                  <Switch />
+                </Form.Item> <span className="switch-label">Give me ice cream. now.</span>
+              </div>
 
-            <Form.Item className="submit-button">
-              <Button type="primary" htmlType="submit" disabled={isButtonDisabled} >
-                Save
-              </Button>
-            </Form.Item>
+              <Form.Item className="submit-button">
+                <Button type="primary" htmlType="submit" disabled={isButtonDisabled} >
+                  Save
+                </Button>
+              </Form.Item>
 
-          </Form>
-        )}
+            </Form>
+          )}
       </Col>
     </Row>
   );
