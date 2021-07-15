@@ -5,3 +5,15 @@
 .switch-label {
     margin-left: 0.5em;
 }
+
+.ice-cream-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}

@@ -1,3 +1,4 @@
+import { Player } from "@lottiefiles/react-lottie-player";
 import { Button, Col, Form, message, Radio, Row, Spin, Switch } from "antd";
 import Title from "antd/lib/typography/Title";
 import React, { useEffect } from "react";
@@ -7,13 +8,15 @@ import "./OtherOptions.scss"
 
 interface FormValues {
   thumbnailsRemoved: boolean,
+  iceCream: boolean,
 }
 
 export function OtherOptions({ firstOptionsConfig }): JSX.Element {
   // ----- State -----
   const [isButtonDisabled, setIsButtonDisabled] = React.useState(true);
   const [initialValues, setInitialValues] = React.useState<FormValues>(null);
-
+  const [lottiePlayer, setLottiePlayer] = React.useState(null);
+  const [clickCounterIceCream, setClickCounterIceCream] = React.useState(1);
 
   // ----- Hooks -----
   useEffect(() => {
@@ -25,7 +28,9 @@ export function OtherOptions({ firstOptionsConfig }): JSX.Element {
     chrome.storage.sync.get("user", (res) => {
       const user: User = res.user;
       setInitialValues({
-        thumbnailsRemoved: user.options.thumbnailsRemoved
+        thumbnailsRemoved: user.options.thumbnailsRemoved,
+        iceCream: false,
+
       });
     });
   }
@@ -44,6 +49,10 @@ export function OtherOptions({ firstOptionsConfig }): JSX.Element {
 
   const onValuesChange = (changedValues: FormValues, allValues: FormValues) => {
     setIsButtonDisabled(false);
+    if (changedValues.iceCream) {
+      lottiePlayer.play();
+      setClickCounterIceCream(clickCounterIceCream + 1);
+    }
   };
 
   return (
@@ -83,7 +92,19 @@ export function OtherOptions({ firstOptionsConfig }): JSX.Element {
 
             </Form>
           )}
+          <div className="ice-cream-container">
+            <Player
+              lottieRef={instance => {
+                setLottiePlayer(instance);
+              }}
+              src="https://assets5.lottiefiles.com/packages/lf20_I0C7ik.json"
+              style={{ width: 200 + clickCounterIceCream * 20 + "px" }}
+            >
+            </Player>
+          </div>
+        </div>
       </Col>
+
     </Row>
   );
 }
