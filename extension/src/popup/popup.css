@@ -175,7 +175,14 @@ header {
   
 }
 
+.channels-list-container {
+  max-width: 300px;
+  max-height: 22px;
+  overflow-y: auto;
+}
+
 .channels-list-label {
+  max-height: 22px;
   margin: 0px 4px;
   background-color: var(--lightGreyBG);
   padding: 3px 4px 3px 7px;

@@ -208,7 +208,7 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
         }
 
         function setMyYouTubeIs(myYoutube) {
-            let htmlString = '<p>My YouTube is' + (myYoutube.listType === res.CONST.LIST_TYPE.BLACK_LIST ? ' not' : '') + ': </p>';
+            let htmlString = '<p>My YouTube is' + (myYoutube.listType === res.CONST.LIST_TYPE.BLACK_LIST ? ' not' : '') + ': </p> <div class="channels-list-container">';
             const fullLists = myYoutube.listType === res.CONST.LIST_TYPE.BLACK_LIST ? myYoutube.fullListsBlack : myYoutube.fullListsWhite;
             for (const fullList of fullLists) {
                 htmlString +=
@@ -219,6 +219,7 @@ chrome.storage.sync.get(["CONST", "user"], (res) => {
                     '</button>' +
                     '</div>'
             }
+            htmlString += "</div>"
             document.getElementById("mode-options").innerHTML = htmlString.trim();
 
             const buttons = document.querySelectorAll('#go-to-options');
