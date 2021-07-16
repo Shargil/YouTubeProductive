@@ -12,11 +12,11 @@ import {
 } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import "./MyYouTube.scss";
-import { User } from "../../interfaces/User";
 import { LIST_TYPE } from "../../constantsDemo";
 import CollectionOfChannelsLists from "./CollectionOfChannelsLists/CollectionOfChannelsLists";
 import { channelsList } from "../../interfaces/ChannelsList";
 import { NavigateToButton } from "../../shared/NavigateToButton/NavigateToButton";
+import { myYoutube } from "../../interfaces/MyYoutube";
 
 const { Title } = Typography;
 
@@ -40,22 +40,22 @@ export default function MyYouTube({ firstOptionsConfig }): JSX.Element {
 
   // ----- Hooks -----
   useEffect(() => {
-    chrome.storage.sync.get("user", (res) => {
-      const user: User = res.user;
-      loadInitialValues(user);
-      setEditingBlackOrWhite(user.myYoutube.listType);
+    chrome.storage.local.get("myYoutube", (res) => {
+      const myYoutube: myYoutube = res.myYoutube;
+      loadInitialValues(myYoutube);
+      setEditingBlackOrWhite(myYoutube.listType);
     });
   }, []);
 
   // ----- Extra Functions -----
-  const loadInitialValues = (user: User) => {
+  const loadInitialValues = (myYoutube: myYoutube) => {
     setInitialValues({
-      blackOrWhiteListMode: user.myYoutube.listType,
+      blackOrWhiteListMode: myYoutube.listType,
       channelsListsFormItemBlack: {
-        collection: user.myYoutube.fullListsBlack,
+        collection: myYoutube.fullListsBlack,
       },
       channelsListsFormItemWhite: {
-        collection: user.myYoutube.fullListsWhite,
+        collection: myYoutube.fullListsWhite,
       },
     });
   }
@@ -77,27 +77,32 @@ export default function MyYouTube({ firstOptionsConfig }): JSX.Element {
 
   // ----- On Events -----
   const onSave = (values: FormValues) => {
-    chrome.storage.sync.get("user", (res) => {
+    chrome.storage.local.get("myYoutube", (res) => {
       // Update User
-      let updatedUser: User = res.user;
-      updatedUser.myYoutube.listType = values.blackOrWhiteListMode;
-      updatedUser.myYoutube.fullListsBlack = values.channelsListsFormItemBlack.collection;
-      updatedUser.myYoutube.fullListsWhite = values.channelsListsFormItemWhite.collection;
+      let updatedMyYoutube: myYoutube = res.myYoutube;
+      updatedMyYoutube.listType = values.blackOrWhiteListMode;
+      updatedMyYoutube.fullListsBlack = values.channelsListsFormItemBlack.collection;
+      updatedMyYoutube.fullListsWhite = values.channelsListsFormItemWhite.collection;
 
       if (values.blackOrWhiteListMode === LIST_TYPE.BLACK_LIST) {
-        updatedUser.myYoutube.list = createPerformanceList(
+        updatedMyYoutube.list = createPerformanceList(
           values.channelsListsFormItemBlack.collection
         );
       }
       if (values.blackOrWhiteListMode === LIST_TYPE.WHITE_LIST) {
-        updatedUser.myYoutube.list = createPerformanceList(
+        updatedMyYoutube.list = createPerformanceList(
           values.channelsListsFormItemWhite.collection
         );
       }
 
-      chrome.storage.sync.set({ user: updatedUser }, () => {
-        message.success("Your new options are saved!");
-        setIsSaveDisabled(true);
+      chrome.storage.local.set({ myYoutube: updatedMyYoutube }, () => {
+        const error = chrome.runtime.lastError;
+        if (error)
+          console.error(error);
+        else {
+          message.success("Your new options are saved!");
+          setIsSaveDisabled(true);
+        }
       });
     });
   };

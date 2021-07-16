@@ -1,4 +1,5 @@
 import { ISmartTimeLimit } from "../contentScripts/smartTimeLimit/smartTimeLimit";
+import { myYoutube } from "./MyYoutube";
 import { User } from "./User";
 
 interface StorageSync {
@@ -6,5 +7,5 @@ interface StorageSync {
 }
 
 interface StorageLocal {
-    smartTimeLimit: ISmartTimeLimit;
+    myYouTube: myYoutube;
 }

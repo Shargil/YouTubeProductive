@@ -81,6 +81,8 @@ export function DeepFocus({ }): JSX.Element {
       "<div>Question... if it was your last day on earth what would you do right now?</div>" +
       "<div>P.S Redesign Me Please!</div>" +
       "</div>";
+    // "You should probably not be here anymore:/ and whats the fastest way to make a human being change a tab? ADssss."
+    // Maybe create stupid ad games that loosing is when you clicking them, ot the opposite, or just games when loosing it click the ad as punishment. 
     muteAudio();
   };
 

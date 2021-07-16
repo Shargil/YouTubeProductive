@@ -1,10 +1,10 @@
-function shouldRemoveVideo(channelName, user, CONST) {
-    if (user.myYoutube.listType === CONST.LIST_TYPE.BLACK_LIST) {
-        if (channelName in user.myYoutube.list) {
+function shouldRemoveVideo(channelName, myYoutube, CONST) {
+    if (myYoutube.listType === CONST.LIST_TYPE.BLACK_LIST) {
+        if (channelName in myYoutube.list) {
             return true;
         }
     } else { // it's a white list
-        if (channelName && !(channelName in user.myYoutube.list)) {
+        if (channelName && !(channelName in myYoutube.list)) {
             return true;
         }
     }

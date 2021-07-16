@@ -9,29 +9,31 @@
 onNavigationProgressBarEnd(filterHome, filterHome);
 
 function filterHome() {
-    chrome.storage.sync.get(["user", "CONST"], ({ user, CONST }) => {
-        onEveryChildAdded("#primary #contents", (element) => {
-            const channelNameElement = element.getElementsByTagName("ytd-channel-name")[0]
-            if (channelNameElement) {
-                const channelName = channelNameElement.innerText;
-                if (shouldRemoveVideo(channelName, user, CONST)) {
-                    // console.log(element);
-                    // element.remove();
-                    // element.parentElement.removeChild(element);
-                    // element.style.backgroundColor = "red";
-                    // element.style.opacity = "0";
+    chrome.storage.sync.get("CONST", ({ CONST }) => {
+        chrome.storage.local.get("myYoutube", ({ myYoutube }) => {
+            onEveryChildAdded("#primary #contents", (element) => {
+                const channelNameElement = element.getElementsByTagName("ytd-channel-name")[0]
+                if (channelNameElement) {
+                    const channelName = channelNameElement.innerText;
+                    if (shouldRemoveVideo(channelName, myYoutube, CONST)) {
+                        // console.log(element);
+                        // element.remove();
+                        // element.parentElement.removeChild(element);
+                        // element.style.backgroundColor = "red";
+                        // element.style.opacity = "0";
 
-                    // element.textContent = "";
+                        // element.textContent = "";
 
 
-                    // while (element.firstChild) {
-                    //     element.removeChild(element.lastChild);
-                    // }
-                    removeAllContentOfElement(element);
+                        // while (element.firstChild) {
+                        //     element.removeChild(element.lastChild);
+                        // }
+                        removeAllContentOfElement(element);
 
+                    }
                 }
-            }
-        })
+            })
+        });
     });
 }
 

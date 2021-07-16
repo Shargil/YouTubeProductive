@@ -8,12 +8,6 @@ try {
             user: {
                 extensionMode: CONST.EXTN_MODE.FILTER,
                 firstOptionsConfig: true,
-                myYoutube: {
-                    listType: CONST.LIST_TYPE.BLACK_LIST,
-                    list: [],
-                    fullListsBlack: [],
-                    fullListsWhite: [],
-                },
                 focus: {
                     focusLevel: "deepFocus",
                     sessionStartTime: null,
@@ -30,14 +24,15 @@ try {
             }
         }, () => { });
 
-        // // ----- Storage Local! -----
-        // chrome.storage.local.set({
-        //     smartTimeLimit: {
-        //         sessionTimeInM: null,
-        //         secondsUsed: {},
-        //         blockUntil: null,
-        //     }
-        // }, () => { })
+        // ----- Storage Local! ----- For items that are larger then 8kb and up to 5mb 
+        chrome.storage.local.set({
+            myYoutube: {
+                listType: CONST.LIST_TYPE.BLACK_LIST,
+                list: [],
+                fullListsBlack: [],
+                fullListsWhite: [],
+            }
+        }, () => { })
 
         chrome.runtime.openOptionsPage(() => { });
     });
