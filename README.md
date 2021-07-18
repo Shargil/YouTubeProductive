@@ -8,7 +8,7 @@ But blocking YouTube all together is not the solution.
 There is too much stuff to learn, too many interesting quality videos to watch.
 The time has come.
 
-![Logo](/extension/src/assets/Logo.svg?raw=true "Title") 
+![Logo](/extension/src/assets/Logo Light.svg?raw=true "YouTube Productive Logo") 
 
 YouTube Productive Logo
 Decide what to watch and for how long.
