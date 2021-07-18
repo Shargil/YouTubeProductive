@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Button, Modal, Select } from "antd";
+import { Button, message, Modal, Select } from "antd";
 const { Option } = Select;
 
 import "./deepFocus.scss";
@@ -41,6 +41,12 @@ export function DeepFocus({ }): JSX.Element {
         }
         if (deepFocusNeedToRunOnThisExtensionMode(user.extensionMode)) {
           if (inMiddleOfSession(user.focus)) {
+            if (shouldNotifyTimeRunningOut(user.focus))
+              message.success({
+                content: "In 1 minute this session will be over",
+                className: 'notify-time-running-out-message '
+              });
+
             continuoInterval();
           } else {
             setIsModalVisible(true);
@@ -115,6 +121,17 @@ export function DeepFocus({ }): JSX.Element {
     );
   };
 
+  let notifyTimeRunningOnce = true;
+  const shouldNotifyTimeRunningOut = (focus: User["focus"]) => {
+    const minutes = 1;
+    const minutesUntilBlock = (new Date(focus.blockStartTime).getTime() - new Date().getTime()) / (1000 * 60);
+    if (notifyTimeRunningOnce && minutesUntilBlock < minutes) {
+      notifyTimeRunningOnce = false;
+      return true;
+    }
+    return false;
+  }
+
   const useUntil = (limitMinutes) => {
     let date = new Date();
     date.setMinutes(date.getMinutes() + limitMinutes);
@@ -182,7 +199,7 @@ export function DeepFocus({ }): JSX.Element {
               onChange={onChangeMinutes}
               placeholder="Select Session Time"
             >
-              <Option value="1">1 min</Option>
+              <Option value="2">2 min</Option>
               <Option value="10">10 min</Option>
               <Option value="15">15 min</Option>
               <Option value="30">30 min</Option>
