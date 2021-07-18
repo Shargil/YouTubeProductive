@@ -18,7 +18,7 @@ export default function ChannelsListShow({ list }: types): JSX.Element {
           <List.Item.Meta
             avatar={<Avatar src={item.img} />}
             title={
-              <a href={"https://www.youtube.com/" + item.id.toString()} target="_blank" rel="noopener noreferrer">
+              <a href={"https://www.youtube.com/channel/" + item.id.toString()} target="_blank" rel="noopener noreferrer">
                 <Title level={5}>{item.name}</Title>
               </a>
             }
