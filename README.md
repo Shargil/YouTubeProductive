@@ -28,7 +28,8 @@ Commits starts with:
 - 🔨 Fix:
 - 👌 Improving:
 - 🧹 Cleaning: 
-- 📜 Docs: 
+- 📜 Docs:
+- 🔖 Release:
 
 Kings and Queens 👑👑👑: 
 - We just started, the first contributor going to get special little something.
