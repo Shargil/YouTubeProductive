@@ -92,7 +92,7 @@ export default function Options() {
         </Layout>
         <Footer style={{ textAlign: "center", fontSize: "14px", paddingTop: "12px", paddingBottom: "12px" }}>
           YouTube Productive - Made With ❤ By <a href="https://github.com/Shargil">Shargil</a>
-          <div style={{ fontSize: "10px" }}>if you want follow/ star me <a href="https://github.com/Shargil?tab=stars">here</a> or upvote any thing <a href="https://stackoverflow.com/users/2593480/yam-shargil">here</a>, you are a ⭐</div>
+          <div style={{ fontSize: "10px" }}>if you want follow/ star me <a href="https://github.com/Shargil?tab=stars">here</a> or upvote any thing <a href="https://stackoverflow.com/users/2593480/yam-shargil?tab=answers">here</a>, you are a ⭐</div>
           {/* <div style={{ fontSize: "10px" }}>Do you know where are the right places to click? <a href="https://github.com/Shargil?tab=stars">here</a> and <a href="https://stackoverflow.com/users/2593480/yam-shargil">here</a> 😅</div> */}
           {/* <div style={{ fontSize: "10px" }}>Some of the best people in this Galaxy 🌌 did it, will you? <a href="https://github.com/Shargil?tab=stars">here</a> and <a href="https://stackoverflow.com/users/2593480/yam-shargil">here</a> 🌎 </div> */}
         </Footer>
