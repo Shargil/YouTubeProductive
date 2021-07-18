@@ -10,7 +10,6 @@ The time has come.
 
 ![Logo](/extension/src/assets/LogoLight.svg?raw=true "YouTube Productive Logo") 
 
-YouTube Productive Logo
 Decide what to watch and for how long.
 Break free out of bad YouTube habits or addiction.
 
