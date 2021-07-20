@@ -1,7 +1,7 @@
 {
     "name": "YouTube Productive",
     "description": "YouTube Productive description",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "manifest_version": 3,
     "background": {
         "service_worker": "background.js"
