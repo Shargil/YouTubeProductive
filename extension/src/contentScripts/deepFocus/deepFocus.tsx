@@ -43,7 +43,7 @@ export function DeepFocus({ }): JSX.Element {
           if (inMiddleOfSession(user.focus)) {
             if (shouldNotifyTimeRunningOut(user.focus))
               message.success({
-                content: "In 1 minute this session will be over",
+                content: "In 2 minute this session will be over",
                 className: 'notify-time-running-out-message '
               });
 
@@ -123,7 +123,7 @@ export function DeepFocus({ }): JSX.Element {
 
   let notifyTimeRunningOnce = true;
   const shouldNotifyTimeRunningOut = (focus: User["focus"]) => {
-    const minutes = 1;
+    const minutes = 2;
     const minutesUntilBlock = (new Date(focus.blockStartTime).getTime() - new Date().getTime()) / (1000 * 60);
     if (notifyTimeRunningOnce && minutesUntilBlock < minutes) {
       notifyTimeRunningOnce = false;
