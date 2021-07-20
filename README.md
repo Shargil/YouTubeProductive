@@ -10,7 +10,6 @@ The time has come.
 
 ![Logo](/extension/src/assets/LogoLight.svg?raw=true "YouTube Productive Logo") 
 
-YouTube Productive Logo
 Decide what to watch and for how long.
 Break free out of bad YouTube habits or addiction.
 
@@ -18,7 +17,7 @@ Choose what type of videos you want or don't want to see.
 
 ## Installation
 
-[YouTube Productive on chrome web store](https://chrome.google.com/webstore/detail/youtube-productive/cpoicmhbahbefaenbchjlagebdnhphpc), click on "Add to Chrome".
+[YouTube Productive on chrome web store](https://chrome.google.com/webstore/detail/youtube-productive/cpoicmhbahbefaenbchjlagebdnhphpc), click on "Add to Chrome". (Still in testing, if you want to try the beta reach out)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
