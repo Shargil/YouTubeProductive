@@ -1,7 +1,12 @@
 .img-container {
     display: flex;
-    justify-content: center;
-    margin: 2em 0em;
+    justify-content: flex-start;
+    margin: 4em 0em;
+}
+
+.img-center {
+	justify-content: center;
+
 }
 
 @keyframes float {
